@@ -1,8 +1,12 @@
 {
   "name": "apoc",
-  "version": "0.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "Making Cypher queries easier",
   "main": "index.js",
+  "bin": {
+    "apoc": "index.js"
+  },
+  "preferGlobal": "true",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +19,6 @@
   "bugs": {
     "url": "https://github.com/hacksparrow/apoc/issues"
   },
-  "homepage": "https://github.com/hacksparrow/apoc"
+  "homepage": "https://github.com/hacksparrow/apoc",
+  "keywords": ["neo4j", "graph database", "cypher", "database"]
 }
