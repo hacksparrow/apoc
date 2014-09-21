@@ -17,6 +17,7 @@ var getContent = function (cypherFilePath) {
     if (fs.existsSync(cypherFilePath)) {
         
         var content = fs.readFileSync(cypherFilePath).toString()
+        content = content.replace(/\/\/.*/g, '') // remove comments from the main
 
         // include files
         var includes = content.match(/include \w+.acf/g)
@@ -28,7 +29,7 @@ var getContent = function (cypherFilePath) {
             })
         }
 
-        content = content.replace(/\/\/.*/g, '') // remove comments
+        content = content.replace(/\/\/.*/g, '') // remove comments from the included files
         content = content.replace(/\r|\n/g, '') // remove line breaks
         content = content.replace(/\s{2}/g, '') // remove extra spaces and line breaks
         
