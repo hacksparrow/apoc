@@ -1,0 +1,5 @@
+create (r1: Role {
+    name: 'Designer'
+})
+
+// this comment should not be included

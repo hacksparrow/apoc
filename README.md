@@ -9,15 +9,14 @@ An Apoc Cypher file is a text file with **.acf** extension, which contains cyphe
 
 ```
 // groups
-include groups.cyp
+include groups.acf
 
 // roles
-include roles.cyp
-
-// query
-match (n) return n
-
+include roles.acf
 ```
+
+The consolidated content is generated as a single query, which makes the identifiers defined in individual files global.
+
 Future versions will make writing Cypher queries even easier.
 
 ## Usage
@@ -29,7 +28,7 @@ var apoc = require('apoc')
 var query = apoc('index.acf')
 ```
 
-apoc can be used from the commandline (buggy right now):
+apoc can be used from the commandline (broken currently):
 
 ```
 $ apoc index.acf

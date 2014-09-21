@@ -20,5 +20,13 @@
     "url": "https://github.com/hacksparrow/apoc/issues"
   },
   "homepage": "https://github.com/hacksparrow/apoc",
-  "keywords": ["neo4j", "graph database", "cypher", "database"]
+  "keywords": [
+    "neo4j",
+    "graph database",
+    "cypher",
+    "database"
+  ],
+  "dependencies": {
+    "commander": "^2.3.0"
+  }
 }
