@@ -91,7 +91,7 @@ query.send().then(function (response) {
 $ apoc index.acf
 ```
 
-Executing an acf file from the commandline with apoc is executing the contents on the Neo4j server. Excellent for writing your queries in the acf files and executing them from the commandline, while taking advantage of acf features.
+Execute acf files with apoc like they were shell scripts. Excellent for writing your queries in the acf files and executing them from the commandline, while taking advantage of acf features.
 
 ## License
 
