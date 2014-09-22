@@ -65,7 +65,7 @@ apoc accepts a file path and returns an object with the following properties:
 |Name|Description
 |----|----------
 |`text`|Text of the consolidated query.
-|`send([port, host])`|Function to send the consolidated query to the server. The `port` and `host` parameters default to 7474 and localhost, respectively. It returns a promise.
+|`send([port, host])`|Method to send the consolidated query to the server. The `port` and `host` parameters default to 7474 and localhost, respectively. It returns a promise.
 
 Usage example:
 
