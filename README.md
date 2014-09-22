@@ -24,6 +24,11 @@ An Apoc Cypher file is a text file with **.acf** extension, which contains cyphe
 The contents of the main acf file:
 
 ```
+// in-file query
+create (m: ApocTestMember {
+    name: 'El Capitan'
+})
+
 // groups
 include groups.acf
 

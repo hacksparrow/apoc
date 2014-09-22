@@ -1,4 +1,10 @@
+// in-file query
+create (m: ApocTestMember {
+    name: 'El Capitan'
+})
+
 // groups
 include groups.acf
+
 // roles
 include roles.acf
