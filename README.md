@@ -60,7 +60,7 @@ Future versions of apoc will enable including acf files from non-main files and 
 
 **As a node module**
 
-apoc accepts a file path or a cypher query, and returns an object with the following properties:
+apoc accepts an acf file path or a cypher query, and returns an object with the following properties:
 
 |Name|Description
 |----|----------
