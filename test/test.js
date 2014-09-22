@@ -2,6 +2,15 @@ var expect = require('chai').expect
 var apoc = require('../')
 var query = apoc('main.acf')
 
+//console.log(query.text)
+
+query.send().then(function (response) {
+    console.log(response)
+}, function (fail) {
+    console.log(fail)
+})
+
+
 // describe('apoc module', function () {
 
 //     it('should read and create cypher queries from acf files', function (done) {

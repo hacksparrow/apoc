@@ -58,16 +58,34 @@ Future versions of apoc will enable including acf files from non-main files and 
 
 ## Usage
 
-As a node module:
+**As a node module**
+
+apoc accepts a file path and returns an object with the following properties:
+
+|Name|Description
+|----|----------
+|`text`|Text of the consolidated query.
+|`send([port, host])`|Function to send the consolidated query to the server. The `port` and `host` parameters default to 7474 and localhost, respectively. It returns a promise.
+
+Usage example:
 
 ```
 var apoc = require('apoc')
 var query = apoc('index.acf')
+
+// the consolidated query
+console.log(query.text)
+
+// send the query to the server
+query.send().then(function (response) {
+    console.log(response)
+}, function (fail) {
+    console.log(fail)
+})
+
 ```
 
-When used as a node module, apoc will generate the query only. It won't send the query to the Neo4j server. Future versions will support query execution too.
-
-From the commandline:
+**From the commandline**
 
 ```
 $ apoc index.acf

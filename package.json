@@ -1,6 +1,6 @@
 {
   "name": "apoc",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Making Cypher queries easier",
   "main": "index.js",
   "bin": {
@@ -22,12 +22,15 @@
   "homepage": "https://github.com/hacksparrow/apoc",
   "keywords": [
     "neo4j",
-    "graph database",
     "cypher",
+    "cypher client",
+    "neo4j client",
+    "graph database",
     "database"
   ],
   "dependencies": {
     "commander": "^2.3.0",
+    "q": "^1.0.1",
     "superagent": "^0.18.2"
   },
   "devDependencies": {

@@ -4,6 +4,7 @@ var fs = require('fs')
 var pack = require(__dirname + '/package.json')
 var program = require('commander')
 var request = require('superagent')
+var Q = require('q')
 
 program
 .version(pack.version)
@@ -101,9 +102,51 @@ else {
         var ext = cypherFilePath.split('.').slice(-1)
 
         // having an extension helps to ensure we are using the right file
-        if (ext == 'acf') return getContent(cypherFilePath)
-        else throw new Error('File type ".%s" not supported', ext)
-        
+        if (ext != 'acf') throw new Error('File type ".%s" not supported', ext)
+
+        var queryText = getContent(cypherFilePath)
+
+        return {
+
+            text: queryText,
+
+            send: function (port, host) {
+
+                var d = Q.defer()
+
+                var host = host || 'localhost'
+                var port = port || 7474
+
+                var query = {
+                    statements: [ { statement: queryText } ]
+                }
+
+                var path = 'http://' + host + ':' + port + '/db/data/transaction/commit'
+
+                request.post(path)
+                .set('Accept', 'application/json')
+                .set('X-Stream', true)
+                .send(query)
+                .end(function (err, res) {
+
+                    if (err) return d.reject(err)
+
+                    var body = res.body
+
+                    if (body.errors.length) {
+                        d.reject(body.errors)
+                    }
+                    else {
+                        d.resolve(body.results)
+                    }
+
+                })
+
+                return d.promise
+
+            }
+        }
+
     }
 }
 
