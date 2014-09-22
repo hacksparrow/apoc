@@ -73,7 +73,7 @@ From the commandline:
 $ apoc index.acf
 ```
 
-Executing an acf file from the commandline with apoc is equivalent to running a batch script. The contents of the file will be executed by the server.
+Executing an acf file from the commandline with apoc is executing the contents on the Neo4j server.
 
 ## License
 
