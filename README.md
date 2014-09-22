@@ -19,9 +19,9 @@ $ npm install apoc -g
 
 ## Apoc Cypher File
 
-An Apoc Cypher file is a text file with **.acf** extension, which contains cypher queries in it. It supports comments using `//`, and can include other acf files from the main file.
+An Apoc Cypher file is a text file with **.acf** extension, which contains cypher queries in it. It supports comments using `//`, and can include other acf files from the main file. Here is an example.
 
-The following content is an example of a main file named `index.acf`.
+The contents of the main acf file:
 
 ```
 // groups
@@ -29,6 +29,22 @@ include groups.acf
 
 // roles
 include roles.acf
+```
+
+The contents of groups.acf:
+
+```
+create (g:ApocTestGroup {
+    name: 'Hackers'
+})
+```
+
+The contens of roles.acf:
+
+```
+create (r: ApocTestRole {
+    name: 'Designer'
+})
 ```
 
 The consolidated content is generated as a single query, which makes the identifiers defined in individual files global.
