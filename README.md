@@ -5,7 +5,7 @@ Apoc is a node module and a command-line tool to make Cypher queries easier.
 
 ## Apoc Cypher File
 
-An Apoc Cypher file is a text file with **.acf** extension, which contains cypher queries in it. It supports comments, and can include other acf files:
+An Apoc Cypher file is a text file with **.acf** extension, which contains cypher queries in it. It supports comments using `//`, and can include other acf files from the main file:
 
 ```
 // groups
@@ -17,7 +17,7 @@ include roles.acf
 
 The consolidated content is generated as a single query, which makes the identifiers defined in individual files global.
 
-Future versions will make writing Cypher queries even easier.
+Future versions of apoc will enable including acf files from non-main files and writing Cypher queries even easier.
 
 ## Usage
 
@@ -28,7 +28,7 @@ var apoc = require('apoc')
 var query = apoc('index.acf')
 ```
 
-apoc can be used from the commandline (broken currently):
+apoc can be used from the commandline:
 
 ```
 $ apoc index.acf

@@ -1,6 +1,6 @@
 {
   "name": "apoc",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Making Cypher queries easier",
   "main": "index.js",
   "bin": {
@@ -27,6 +27,11 @@
     "database"
   ],
   "dependencies": {
-    "commander": "^2.3.0"
+    "commander": "^2.3.0",
+    "superagent": "^0.18.2"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.21.4"
   }
 }

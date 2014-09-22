@@ -1,10 +1,10 @@
 #! /usr/bin/env node
 
-
 var fs = require('fs')
-var spawn = require('child_process').spawn
 var pack = require(__dirname + '/package.json')
-var program = require('commander');
+var program = require('commander')
+var request = require('superagent')
+var table = require('text-table')
 
 program
 .version(pack.version)
@@ -32,8 +32,6 @@ var getContent = function (cypherFilePath) {
         content = content.replace(/\/\/.*/g, '') // remove comments from the included files
         content = content.replace(/\r|\n/g, '') // remove line breaks
         content = content.replace(/\s{2}/g, '') // remove extra spaces and line breaks
-        
-        content += ';' // terminate the query
 
         return content
 
@@ -60,45 +58,38 @@ if (require.main == module) {
         // having an extension helps to ensure we are using the right file
         if (ext == 'acf') {
 
-            // commandline query has to be quoted and terminated with a new line
-            var query = '"' + getContent(cypherFilePath).replace(/"/g, '\"') + '"\n';
-
             var host = program.host || 'localhost'
-            var port = program.port || 1337
+            var port = program.port || 7474
 
-            console.log(query)
+            var statement = getContent(cypherFilePath)
+            var query = {
+                statements: [ { statement: statement } ]
+            }
 
-            // the easier -c option of writing to neo4j-shell is not working for some reason
-            var shell = spawn('neo4j-shell', ['-host', host, '-port', port])
+            var path = 'http://' + host + ':' + port + '/db/data/transaction/commit'
 
-            var written = false;
-            shell.stdout.on('data', function (data) {
+            request.post(path)
+            .set('Accept', 'application/json')
+            .set('X-Stream', true)
+            .send(query)
+            .end(function (err, res) {
 
-                data = data.toString()
+                if (err) throw new Error(err)
+                var body = res.body
 
-                if ((data.indexOf('neo4j-sh') > -1) && (written == false)) {
-                    written = true
-                    shell.stdin.write(query)
+                if (body.errors.length) {
+                    console.log(body.errors)
                 }
-                console.log(written, data)
-            })
+                else {
+                    console.log(body.results)
+                }
 
-            shell.stdout.on('end', function () {
-                console.log(written, 'END')
-            })
-
-            shell.stdout.on('error', function (error) {
-                console.log(error.toString())
-            })
-
-            shell.on('exit', function (code) {
-                if (code != 0) console.log('Error: ', code)
             })
 
         }
 
         else {
-            console.log('File type ".%s" not supported', ext);
+            console.log('File type ".%s" not supported', ext)
         }
     }
 }

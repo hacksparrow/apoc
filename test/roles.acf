@@ -1,4 +1,4 @@
-create (r1: Role {
+create (r1: XApocTestRoleX {
     name: 'Designer'
 })
 

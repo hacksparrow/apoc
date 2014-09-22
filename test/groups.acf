@@ -1,3 +1,8 @@
-create (Group {
+// this comment should be stripped off
+
+create (g:XApocTestGroupX {
     name: 'Hackers'
 })
+
+// future version: include more files, just for the demo
+// include users.acf
