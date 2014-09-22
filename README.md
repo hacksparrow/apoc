@@ -58,7 +58,7 @@ Future versions of apoc will enable including acf files from non-main files and 
 
 ## Usage
 
-**apoc can be used as a node module**
+As a node module:
 
 ```
 var apoc = require('apoc')
@@ -67,7 +67,7 @@ var query = apoc('index.acf')
 
 When used as a node module, apoc will generate the query only. It won't send the query to the Neo4j server. Future versions will support query execution too.
 
-**apoc can be used from the commandline**
+From the commandline:
 
 ```
 $ apoc index.acf
