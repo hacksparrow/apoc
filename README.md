@@ -3,6 +3,20 @@ Apoc
 
 Apoc is a node module and a command-line tool to make Cypher queries easier.
 
+## Installation
+
+As a node module:
+
+```
+$ npm install apoc --save
+```
+
+As a command-line tool:
+
+```
+$ npm install apoc -g
+```
+
 ## Apoc Cypher File
 
 An Apoc Cypher file is a text file with **.acf** extension, which contains cypher queries in it. It supports comments using `//`, and can include other acf files from the main file.
