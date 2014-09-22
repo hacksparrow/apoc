@@ -58,18 +58,22 @@ Future versions of apoc will enable including acf files from non-main files and 
 
 ## Usage
 
-apoc can be used as a node module:
+**apoc can be used as a node module**
 
 ```
 var apoc = require('apoc')
 var query = apoc('index.acf')
 ```
 
-apoc can be used from the commandline:
+When used as a node module, apoc will generate the query only. It won't send the query to the Neo4j server. Future versions will support query execution too.
+
+**apoc can be used from the commandline**
 
 ```
 $ apoc index.acf
 ```
+
+Executing an acf file from the commandline with apoc is equivalent to running a batch script. The contents of the file will be executed by the server.
 
 ## License
 
