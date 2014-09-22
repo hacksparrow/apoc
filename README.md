@@ -60,7 +60,7 @@ Future versions of apoc will enable including acf files from non-main files and 
 
 **As a node module**
 
-apoc accepts a file path and returns an object with the following properties:
+apoc accepts a file path or an cypher query, and returns an object with the following properties:
 
 |Name|Description
 |----|----------
@@ -71,13 +71,20 @@ Usage example:
 
 ```
 var apoc = require('apoc')
-var query = apoc('index.acf')
 
+// generate the consolidated cypher query from the acf file
+var query = apoc('index.acf')
 // the consolidated query
 console.log(query.text)
-
 // send the query to the server
 query.send().then(function (response) {
+    console.log(response)
+}, function (fail) {
+    console.log(fail)
+})
+
+// specify a cypher query and send it to the server
+apoc('match (n) return n').send().then(function (response) {
     console.log(response)
 }, function (fail) {
     console.log(fail)

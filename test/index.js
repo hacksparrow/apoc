@@ -1,10 +1,18 @@
 var expect = require('chai').expect
 var apoc = require('../')
+
+
+// acf query
 var query = apoc('main.acf')
-
 //console.log(query.text)
-
 query.send().then(function (response) {
+    console.log(response)
+}, function (fail) {
+    console.log(fail)
+})
+
+// cypher query
+apoc('match (n) return n').send().then(function (response) {
     console.log(response)
 }, function (fail) {
     console.log(fail)

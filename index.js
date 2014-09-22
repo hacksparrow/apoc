@@ -97,14 +97,20 @@ if (require.main == module) {
 // node module
 else {
 
-    module.exports = function (cypherFilePath) {
+    module.exports = function (input) {
 
-        var ext = cypherFilePath.split('.').slice(-1)
+        var queryText
+        var acfQuery = true
+        var ext = input.split('.').slice(-1)[0]
 
-        // having an extension helps to ensure we are using the right file
-        if (ext != 'acf') throw new Error('File type ".%s" not supported', ext)
-
-        var queryText = getContent(cypherFilePath)
+        // very likely an accidental choice of file type 
+        if (ext != 'acf') {
+            if (ext.length <= 2) throw new Error('File type ".%s" not supported', ext)
+            else acfQuery = false
+        }
+    
+        if (acfQuery) queryText= getContent(input)
+        else queryText = input
 
         return {
 
