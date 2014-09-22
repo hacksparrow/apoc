@@ -4,7 +4,6 @@ var fs = require('fs')
 var pack = require(__dirname + '/package.json')
 var program = require('commander')
 var request = require('superagent')
-var table = require('text-table')
 
 program
 .version(pack.version)
