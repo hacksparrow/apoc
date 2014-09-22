@@ -44,7 +44,7 @@ create (g:ApocTestGroup {
 })
 ```
 
-The contens of roles.acf:
+The contents of roles.acf:
 
 ```
 create (r: ApocTestRole {
@@ -73,7 +73,7 @@ From the commandline:
 $ apoc index.acf
 ```
 
-Executing an acf file from the commandline with apoc is executing the contents on the Neo4j server.
+Executing an acf file from the commandline with apoc is executing the contents on the Neo4j server. Excellent for writing your queries in the acf files and executing them from the commandline, while taking advantage of acf features.
 
 ## License
 
