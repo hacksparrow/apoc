@@ -48,7 +48,7 @@ The contents of groups.acf:
 ```
 create (g:ApocTestGroup {
     name: 'Hackers',
-    id: 'g`Math.floor(Math.random()*1000)`'
+    id: '`Math.floor(Math.random()*1000)`'
 })
 ```
 
@@ -97,7 +97,7 @@ query.exec().then(function (response) {
     console.log(fail)
 })
 
-// specify a cypher query and send it to the server
+// specify a cypher query and execute it on the server
 apoc('match (n) return n').exec().then(function (response) {
     console.log(response)
 }, function (fail) {
@@ -123,7 +123,7 @@ Apoc provides useful and commonly used algorithms and functions.
 ```
 create (r1: ApocTestRole {
     name: 'Designer',
-    id: '`md5(''+Date.now())`'
+    id: '`md5('apple')`'
 })
 
 ```
@@ -136,6 +136,8 @@ create (g: ApocTestUser {
     secret: '`bcrypt.hashSync('sekr37', bcrypt.genSaltSync(10))`'
 })
 ```
+
+Many more will be added.
 
 ## License
 
