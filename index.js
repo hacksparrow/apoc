@@ -12,6 +12,21 @@ program
 .option('-p, --port [port]', 'Port. Defaults to 1337.')
 .parse(process.argv);
 
+var jscode = function (content) {
+
+    var matches = content.match(/`[^`]+`/g)
+
+    if (matches) {
+        matches.forEach(function (match) {
+            var e = eval(match.replace(/`/g, '')) // hopefully eval is justified here
+            content = content.replace(match, e)
+        })
+    }
+
+    return content
+
+}
+
 var getContent = function (cypherFilePath) {
 
     if (fs.existsSync(cypherFilePath)) {
@@ -32,6 +47,8 @@ var getContent = function (cypherFilePath) {
         content = content.replace(/\/\/.*/g, '') // remove comments from the included files
         content = content.replace(/\r|\n/g, '') // remove line breaks
         content = content.replace(/\s{2}/g, '') // remove extra spaces and line breaks
+
+        content = jscode(content) // js code
 
         return content
 

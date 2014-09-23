@@ -1,6 +1,7 @@
 // in-file query
 create (m: ApocTestMember {
-    name: 'El Capitan'
+    name: 'El Capitan',
+    id: 'u`Date.now()`' // JavaScript code
 })
 
 // groups
