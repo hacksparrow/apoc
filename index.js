@@ -64,7 +64,7 @@ var getContent = function (cypherFilePath, vars) {
         }
 
         content = content.replace(/\/\/.*/g, '') // remove comments from the included files
-        content = content.replace(/\r|\n/g, '') // remove line breaks
+        content = content.replace(/\r|\n/g, ' ') // convert new lines to space to preserve continuity
         content = content.replace(/\s{2}/g, '') // remove extra spaces and line breaks
 
         if (vars) content = template(content, vars) // template
@@ -136,6 +136,9 @@ if (require.main == module) {
 else {
 
     module.exports = function (input, vars) {
+
+        // TODO: make sure this works
+        if (input == undefined) throw new Error('Specify a file path or a Cypher query')
 
         var queryText
         var acfQuery = true
