@@ -30,7 +30,7 @@ The contents of the main acf file:
 
 ```
 create (m: ApocTestMember {
-    id: 'u`Date.now()`', // JavaScript code
+    id: '`Date.now()`', // JavaScript code
     name: 'El Capitan',
     twitter: '%twitter%' // template code
 })
