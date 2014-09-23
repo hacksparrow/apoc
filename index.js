@@ -116,7 +116,7 @@ else {
 
             text: queryText,
 
-            send: function (port, host) {
+            exec: function (port, host) {
 
                 var d = Q.defer()
 

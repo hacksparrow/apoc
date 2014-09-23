@@ -65,7 +65,7 @@ apoc accepts an acf file path or a cypher query, and returns an object with the 
 |Name|Description
 |----|----------
 |`text`|Text of the consolidated query.
-|`send([port, host])`|Method to send the consolidated query to the server. The `port` and `host` parameters default to 7474 and localhost, respectively. It returns a promise.
+|`exec([port, host])`|Method to execute the query at the server. The `port` and `host` parameters default to 7474 and localhost, respectively. It returns a promise.
 
 Usage example:
 
@@ -74,17 +74,19 @@ var apoc = require('apoc')
 
 // generate the consolidated cypher query from the acf file
 var query = apoc('index.acf')
+
 // the consolidated query
 console.log(query.text)
-// send the query to the server
-query.send().then(function (response) {
+
+// execute the query at localhost:7474
+query.exec().then(function (response) {
     console.log(response)
 }, function (fail) {
     console.log(fail)
 })
 
 // specify a cypher query and send it to the server
-apoc('match (n) return n').send().then(function (response) {
+apoc('match (n) return n').exec().then(function (response) {
     console.log(response)
 }, function (fail) {
     console.log(fail)
