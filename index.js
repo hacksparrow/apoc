@@ -5,6 +5,7 @@ var pack = require(__dirname + '/package.json')
 var program = require('commander')
 var request = require('superagent')
 var Q = require('q')
+require('./lib')
 
 program
 .version(pack.version)
@@ -18,8 +19,11 @@ var jscode = function (content) {
 
     if (matches) {
         matches.forEach(function (match) {
-            var e = eval(match.replace(/`/g, '')) // hopefully eval is justified here
+            
+            var code = match.replace(/`/g, '')
+            var e = eval(code) // hopefully eval is justified here
             content = content.replace(match, e)
+            
         })
     }
 

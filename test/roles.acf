@@ -1,5 +1,6 @@
 create (r1: XApocTestRoleX {
-    name: 'Designer'
+    name: 'Designer',
+    id: '`md5(''+Date.now())`'
 })
 
 // this comment should not be included

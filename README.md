@@ -104,6 +104,19 @@ $ apoc index.acf
 
 Execute acf files with apoc like they were shell scripts. Excellent for writing your queries in the acf files and executing them from the commandline, while taking advantage of acf features.
 
+## API
+
+Apoc provides useful and commonly used algorithms and functions.
+
+**md5**
+
+```
+create (r1: XApocTestRoleX {
+    name: 'Designer',
+    id: '`md5(''+Date.now())`'
+})
+```
+
 ## License
 
 Copyright (c) 2014 Hage Yaapa &lt;captain@hacksparrow.com&gt;
