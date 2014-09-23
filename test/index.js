@@ -1,9 +1,8 @@
 var expect = require('chai').expect
 var apoc = require('../')
 
-
 // acf query
-var query = apoc('main.acf')
+var query = apoc('main.acf', { twitter: '@hacksparrow', email: 'captain@hacksparrow.com' })
 //console.log(query.text)
 query.exec().then(function (response) {
     console.log(response)

@@ -13,6 +13,21 @@ program
 .option('-p, --port [port]', 'Port. Defaults to 1337.')
 .parse(process.argv);
 
+
+var template = function (content, vars) {
+
+    var matches = content.match(/%[^%]+%/g)
+
+    matches.forEach(function (match) {
+            
+        var key = match.replace(/%/g, '')
+        content = content.replace(match, vars[key])
+
+    })
+
+    return content
+}
+
 var jscode = function (content) {
 
     var matches = content.match(/`[^`]+`/g)
@@ -31,7 +46,7 @@ var jscode = function (content) {
 
 }
 
-var getContent = function (cypherFilePath) {
+var getContent = function (cypherFilePath, vars) {
 
     if (fs.existsSync(cypherFilePath)) {
         
@@ -51,6 +66,8 @@ var getContent = function (cypherFilePath) {
         content = content.replace(/\/\/.*/g, '') // remove comments from the included files
         content = content.replace(/\r|\n/g, '') // remove line breaks
         content = content.replace(/\s{2}/g, '') // remove extra spaces and line breaks
+
+        if (vars) content = template(content, vars) // template
 
         content = jscode(content) // js code
 
@@ -118,7 +135,7 @@ if (require.main == module) {
 // node module
 else {
 
-    module.exports = function (input) {
+    module.exports = function (input, vars) {
 
         var queryText
         var acfQuery = true
@@ -130,7 +147,7 @@ else {
             else acfQuery = false
         }
     
-        if (acfQuery) queryText= getContent(input)
+        if (acfQuery) queryText= getContent(input, vars)
         else queryText = input
 
         return {

@@ -1,7 +1,12 @@
 Apoc
 ====
 
-Apoc is a node module and a command-line tool to make Cypher queries dynamic and powerful.
+Apoc is a node module and a command-line tool to make Cypher queries dynamic and powerful. It adds the following features on top of Cypher.
+
+* Comments using `//`
+* JavaScript code within backticks
+* Variables within %% (when used as a node module)
+* Include other acf files from the main file
 
 ## Installation
 
@@ -19,15 +24,16 @@ $ npm install apoc -g
 
 ## Apoc Cypher File
 
-An Apoc Cypher file is a text file with **.acf** extension, which contains cypher queries in it. It supports comments using `//`, JavaScript code within backticks, and can include other acf files from the main file. Here is an example.
+An Apoc Cypher file is a text file with **.acf** extension, which contains Cypher queries in it with extended acf features. Here is an example.
 
 The contents of the main acf file:
 
 ```
-// in-file query
 create (m: ApocTestMember {
+    id: 'u`Date.now()`', // JavaScript code
     name: 'El Capitan',
-    id: 'u`Date.now()`' // JavaScript code
+    twitter: '%twitter%', // template code
+    email: '%email%'
 })
 
 // groups
@@ -62,7 +68,11 @@ Future versions of apoc will enable including acf files from non-main files and 
 
 **As a node module**
 
-apoc accepts an acf file path or a cypher query, and returns an object with the following properties:
+apoc accepts an acf file path or a cypher query and an optional object to with the variable for the template system.
+
+
+
+It returns an object with the following properties:
 
 |Name|Description
 |----|----------
@@ -75,7 +85,7 @@ Usage example:
 var apoc = require('apoc')
 
 // generate the consolidated cypher query from the acf file
-var query = apoc('index.acf')
+var query = apoc('index.acf', { twitter: '@hacksparrow', email: 'captain@hacksparrow.com' })
 
 // the consolidated query
 console.log(query.text)
