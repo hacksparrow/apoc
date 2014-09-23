@@ -127,6 +127,8 @@ create (g: ApocTestUser {
 })
 ```
 
+Many more will be added.
+
 ## License
 
 Copyright (c) 2014 Hage Yaapa &lt;captain@hacksparrow.com&gt;
