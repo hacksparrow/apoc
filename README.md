@@ -27,7 +27,7 @@ The contents of the main acf file:
 // in-file query
 create (m: ApocTestMember {
     name: 'El Capitan',
-    id: 'u`Date.now()`' // JavaScript code
+    id: '`Date.now()`' // JavaScript code
 })
 
 // groups
@@ -42,7 +42,7 @@ The contents of groups.acf:
 ```
 create (g:ApocTestGroup {
     name: 'Hackers',
-    id: 'g`Math.floor(Math.random()*1000)`'
+    id: '`Math.floor(Math.random()*1000)`'
 })
 ```
 
