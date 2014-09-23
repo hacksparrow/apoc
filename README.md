@@ -32,8 +32,7 @@ The contents of the main acf file:
 create (m: ApocTestMember {
     id: 'u`Date.now()`', // JavaScript code
     name: 'El Capitan',
-    twitter: '%twitter%', // template code
-    email: '%email%'
+    twitter: '%twitter%' // template code
 })
 
 // groups
@@ -68,9 +67,7 @@ Future versions of apoc will enable including acf files from non-main files and 
 
 **As a node module**
 
-apoc accepts an acf file path or a cypher query and an optional object to with the variable for the template system.
-
-
+apoc accepts an acf file path or a cypher query and an optional object to with the variables for the template system.
 
 It returns an object with the following properties:
 
@@ -85,7 +82,7 @@ Usage example:
 var apoc = require('apoc')
 
 // generate the consolidated cypher query from the acf file
-var query = apoc('index.acf', { twitter: '@hacksparrow', email: 'captain@hacksparrow.com' })
+var query = apoc('index.acf', { twitter: '@hacksparrow' })
 
 // the consolidated query
 console.log(query.text)
