@@ -1,7 +1,7 @@
 Apoc
 ====
 
-Apoc is a node module and a command-line tool to make Cypher queries easier.
+Apoc is a node module and a command-line tool to make Cypher queries more dynamic and easier.
 
 ## Installation
 
@@ -111,7 +111,7 @@ Apoc provides useful and commonly used algorithms and functions.
 **md5**
 
 ```
-create (r1: XApocTestRoleX {
+create (r1: ApocTestRole {
     name: 'Designer',
     id: '`md5(''+Date.now())`'
 })
