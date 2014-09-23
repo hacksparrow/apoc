@@ -115,6 +115,16 @@ create (r1: ApocTestRole {
     name: 'Designer',
     id: '`md5(''+Date.now())`'
 })
+
+```
+
+**[bcrypt](https://www.npmjs.org/package/bcrypt)**
+
+```
+create (g: ApocTestUser {
+    name: 'Apoc',
+    secret: '`bcrypt.hashSync('sekr37', bcrypt.genSaltSync(10))`'
+})
 ```
 
 ## License

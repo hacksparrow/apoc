@@ -1,6 +1,6 @@
 {
   "name": "apoc",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Making Cypher queries dynamic and powerful",
   "main": "index.js",
   "bin": {
@@ -29,6 +29,7 @@
     "database"
   ],
   "dependencies": {
+    "bcrypt": "^0.8.0",
     "commander": "^2.3.0",
     "q": "^1.0.1",
     "superagent": "^0.18.2"
