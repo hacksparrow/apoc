@@ -64,8 +64,8 @@ apoc accepts an acf file path or a cypher query, and returns an object with the 
 
 |Name|Description
 |----|----------
-|`text`|Text of the consolidated query.
-|`exec([port, host])`|Method to execute the query at the server. The `port` and `host` parameters default to 7474 and localhost, respectively. It returns a promise.
+|text|Text of the consolidated query.
+|exec([port, host])|Method to execute the query at the server. The `port` and `host` parameters default to 7474 and localhost, respectively. It returns a promise.
 
 Usage example:
 
