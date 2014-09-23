@@ -87,7 +87,7 @@ query.exec().then(function (response) {
     console.log(fail)
 })
 
-// specify a cypher query and send it to the server
+// specify a cypher query and execute it on the server
 apoc('match (n) return n').exec().then(function (response) {
     console.log(response)
 }, function (fail) {
@@ -113,7 +113,7 @@ Apoc provides useful and commonly used algorithms and functions.
 ```
 create (r1: ApocTestRole {
     name: 'Designer',
-    id: '`md5(''+Date.now())`'
+    id: '`md5('apple')`'
 })
 
 ```
