@@ -67,7 +67,7 @@ Future versions of apoc will enable including acf files from non-main files and 
 
 **As a node module**
 
-apoc accepts an acf file path or a cypher query and an optional object to with the variables for the template system.
+apoc accepts a cypher query, or an acf file path and an optional object to with the variables for the template system.
 
 It returns an object with the following properties:
 
@@ -76,7 +76,21 @@ It returns an object with the following properties:
 |text|Text of the consolidated query.
 |exec([port, host])|Method to execute the query at the server. The `port` and `host` parameters default to 7474 and localhost, respectively. It returns a promise.
 
-Usage example:
+Usage example (inline cypher query):
+
+```
+var apoc = require('apoc')
+
+// specify a cypher query and execute it on the server
+apoc('match (n) return n').exec().then(function (response) {
+    console.log(response)
+}, function (fail) {
+    console.log(fail)
+})
+
+```
+
+Usage example (with acf file):
 
 ```
 var apoc = require('apoc')
@@ -89,13 +103,6 @@ console.log(query.text)
 
 // execute the query at localhost:7474
 query.exec().then(function (response) {
-    console.log(response)
-}, function (fail) {
-    console.log(fail)
-})
-
-// specify a cypher query and execute it on the server
-apoc('match (n) return n').exec().then(function (response) {
     console.log(response)
 }, function (fail) {
     console.log(fail)
