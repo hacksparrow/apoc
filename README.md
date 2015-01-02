@@ -71,7 +71,7 @@ Apoc exposes two methods:
 
 |Name|Description
 |----|----------
-|apoc.query(query \| apoc file, [variables], [port], [host])| For making custom queries
+|apoc.query(query \| apoc file, [variables], [port], [host])| For making custom queries.
 |apoc.insert(objects, [port], [host])| For insert (including bulk inserts). Returns a promise.
 
 **apoc.query()** accepts a cypher query, or an acf file path and an optional object to with the variables for the template system.
