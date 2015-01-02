@@ -19,7 +19,7 @@ var template = function (content, vars) {
     var matches = content.match(/%[^%]+%/g)
 
     matches.forEach(function (match) {
-            
+
         var key = match.replace(/%/g, '')
         content = content.replace(match, vars[key])
 
@@ -34,11 +34,11 @@ var jscode = function (content) {
 
     if (matches) {
         matches.forEach(function (match) {
-            
+
             var code = match.replace(/`/g, '')
             var e = eval(code) // hopefully eval is justified here
             content = content.replace(match, e)
-            
+
         })
     }
 
@@ -49,7 +49,7 @@ var jscode = function (content) {
 var getContent = function (cypherFilePath, vars) {
 
     if (fs.existsSync(cypherFilePath)) {
-        
+
         var content = fs.readFileSync(cypherFilePath).toString()
         content = content.replace(/\/\/.*/g, '') // remove comments from the main
 
@@ -135,66 +135,111 @@ if (require.main == module) {
 // node module
 else {
 
-    module.exports = function (input, vars) {
+    module.exports = {
 
-        // TODO: make sure this works
-        if (input == undefined) throw new Error('Specify a file path or a Cypher query')
+        query: function (input, vars, port, host) {
 
-        var queryText
-        var acfQuery = true
-        var ext = input.split('.').slice(-1)[0]
+            var host = host || 'localhost'
+            var port = port || 7474
 
-        // very likely an accidental choice of file type 
-        if (ext != 'acf') {
-            if (ext.length <= 2) throw new Error('File type ".%s" not supported', ext)
-            else acfQuery = false
-        }
-    
-        if (acfQuery) queryText= getContent(input, vars)
-        else queryText = input
+            // TODO: make sure this works
+            if (input == undefined) throw new Error('Specify a file path or a Cypher query')
 
-        return {
+            var queryText
+            var acfQuery = true
+            var ext = input.split('.').slice(-1)[0]
 
-            text: queryText,
+            // very likely an accidental choice of file type
+            if (ext != 'acf') {
+                if (ext.length <= 2) throw new Error('File type ".%s" not supported', ext)
+                else acfQuery = false
+            }
 
-            exec: function (port, host) {
+            if (acfQuery) queryText= getContent(input, vars)
+            else queryText = input
 
-                var d = Q.defer()
+            return {
 
-                var host = host || 'localhost'
-                var port = port || 7474
+                text: queryText,
 
-                var query = {
-                    statements: [ { statement: queryText } ]
+                exec: function () {
+
+                    var d = Q.defer()
+
+                    var query = {
+                        statements: [ { statement: queryText } ]
+                    }
+
+                    var path = 'http://' + host + ':' + port + '/db/data/transaction/commit'
+
+                    request.post(path)
+                    .set('Accept', 'application/json')
+                    .set('X-Stream', true)
+                    .send(query)
+                    .end(function (err, res) {
+
+                        if (err) return d.reject(err)
+
+                        var body = res.body
+
+                        if (body.errors.length) {
+                            d.reject(body.errors)
+                        }
+                        else {
+                            d.resolve(body.results)
+                        }
+
+                    })
+
+                    return d.promise
+
                 }
 
-                var path = 'http://' + host + ':' + port + '/db/data/transaction/commit'
-
-                request.post(path)
-                .set('Accept', 'application/json')
-                .set('X-Stream', true)
-                .send(query)
-                .end(function (err, res) {
-
-                    if (err) return d.reject(err)
-
-                    var body = res.body
-
-                    if (body.errors.length) {
-                        d.reject(body.errors)
-                    }
-                    else {
-                        d.resolve(body.results)
-                    }
-
-                })
-
-                return d.promise
-
             }
+
+        },
+
+
+        // performs bulk insert - great for performance
+        insert: function (inserts, port, host) {
+
+            if (!Array.isArray(inserts)) throw new Error('apoc.inser requires an array')
+
+            var host = host || 'localhost'
+            var port = port || 7474
+
+            var d = Q.defer()
+            var body = []
+
+            inserts.forEach(function (obj) {
+                var cmd = {
+                    method: 'POST',
+                    to: '/node',
+                    body: obj
+                }
+                body.push(cmd)
+            })
+
+            var path = 'http://' + host + ':' + port + '/db/data/batch'
+
+            request.post(path)
+            .set('Accept', 'application/json')
+            .set('X-Stream', true)
+            .send(body)
+            .end(function (err, res) {
+
+                if (err) return d.reject(err)
+
+                d.resolve(res.body)
+
+            })
+
+            return d.promise
+
         }
 
     }
+
 }
 
 

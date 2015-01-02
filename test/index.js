@@ -2,7 +2,7 @@ var expect = require('chai').expect
 var apoc = require('../')
 
 // acf query
-var query = apoc('main.acf', { twitter: '@hacksparrow', email: 'captain@hacksparrow.com' })
+var query = apoc.query('main.acf', { twitter: '@hacksparrow', email: 'captain@hacksparrow.com' })
 //console.log(query.text)
 query.exec().then(function (response) {
     console.log(response)
@@ -11,12 +11,19 @@ query.exec().then(function (response) {
 })
 
 // cypher query
-apoc('match (n) return n').exec().then(function (response) {
+apoc.query('match (n) return n').exec().then(function (response) {
     console.log(response)
 }, function (fail) {
     console.log(fail)
 })
 
+// insert
+var users = [{name: 'A'}, {name: 'B'}, {name: 'C'}]
+apoc.insert(users).then(function (response) {
+    console.log(response)
+}, function (fail) {
+    console.log(fail)
+})
 
 // describe('apoc module', function () {
 

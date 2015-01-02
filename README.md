@@ -82,7 +82,7 @@ Usage example (inline cypher query):
 var apoc = require('apoc')
 
 // specify a cypher query and execute it on the server
-apoc('match (n) return n').exec().then(function (response) {
+apoc.query('match (n) return n').exec().then(function (response) {
     console.log(response)
 }, function (fail) {
     console.log(fail)
@@ -96,7 +96,7 @@ Usage example (with acf file):
 var apoc = require('apoc')
 
 // generate the consolidated cypher query from the acf file
-var query = apoc('index.acf', { twitter: '@hacksparrow' })
+var query = apoc.query('index.acf', { twitter: '@hacksparrow' })
 
 // the consolidated query
 console.log(query.text)
