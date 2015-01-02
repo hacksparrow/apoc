@@ -65,14 +65,14 @@ Future versions of apoc will enable including acf files from non-main files and 
 
 ## Usage
 
-**As a node module**
+### As a node module
 
 Apoc exposes two methods:
 
 |Name|Description
 |----|----------
-|apoc.query(query \| apoc file, [variables], [port], [host])| For making custom queries.
-|apoc.insert(objects, [port], [host])| For insert (including bulk inserts). Returns a promise.
+|**apoc.query**(query \| apoc file, [variables], [port], [host])| For making custom queries.
+|**apoc.insert**(objects, [port], [host])| For insert (including bulk inserts). Returns a promise.
 
 **apoc.query()** accepts a cypher query, or an acf file path and an optional object to with the variables for the template system.
 
@@ -80,8 +80,8 @@ It returns an object with the following properties:
 
 |Name|Description
 |----|----------
-|text|Text of the consolidated query.
-|exec()|Method to execute the query at the server. It returns a promise.
+|**text**|Text of the consolidated query.
+|**exec()**|Method to execute the query at the server. It returns a promise.
 
 Usage example (inline cypher query):
 
@@ -127,7 +127,7 @@ apoc.insert(users).then(function (response) {
 })
 ```
 
-**From the commandline**
+### From the commandline
 
 ```
 $ apoc index.acf
