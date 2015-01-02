@@ -67,7 +67,14 @@ Future versions of apoc will enable including acf files from non-main files and 
 
 **As a node module**
 
-apoc accepts a cypher query, or an acf file path and an optional object to with the variables for the template system.
+Apoc exposes two methods:
+
+|Name|Description
+|----|----------
+|apoc.query(query | apoc file, [variables], [port], [host])| For making custom queries
+|apoc.insert()| For insert (including bulk inserts)
+
+**apoc.query()** accepts a cypher query, or an acf file path and an optional object to with the variables for the template system.
 
 It returns an object with the following properties:
 
@@ -87,7 +94,17 @@ apoc.query('match (n) return n').exec().then(function (response) {
 }, function (fail) {
     console.log(fail)
 })
+```
 
+**apoc.query()** accepts an array of objects to be inserted, and optional `port` and `host` params.  
+
+```
+var users = [{name: 'A'}, {name: 'B'}, {name: 'C'}]
+apoc.insert(users).then(function (response) {
+    console.log(response)
+}, function (fail) {
+    console.log(fail)
+})
 ```
 
 Usage example (with acf file):
