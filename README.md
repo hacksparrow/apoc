@@ -71,8 +71,8 @@ Apoc exposes two methods:
 
 |Name|Description
 |----|----------
-|apoc.query(query | apoc file, [variables], [port], [host])| For making custom queries
-|apoc.insert()| For insert (including bulk inserts)
+|apoc.query(query \| apoc file, [variables], [port], [host])| For making custom queries
+|apoc.insert()| For insert (including bulk inserts). Returns a promise.
 
 **apoc.query()** accepts a cypher query, or an acf file path and an optional object to with the variables for the template system.
 
@@ -81,7 +81,7 @@ It returns an object with the following properties:
 |Name|Description
 |----|----------
 |text|Text of the consolidated query.
-|exec([port, host])|Method to execute the query at the server. The `port` and `host` parameters default to 7474 and localhost, respectively. It returns a promise.
+|exec()|Method to execute the query at the server. It returns a promise.
 
 Usage example (inline cypher query):
 
@@ -90,17 +90,6 @@ var apoc = require('apoc')
 
 // specify a cypher query and execute it on the server
 apoc.query('match (n) return n').exec().then(function (response) {
-    console.log(response)
-}, function (fail) {
-    console.log(fail)
-})
-```
-
-**apoc.query()** accepts an array of objects to be inserted, and optional `port` and `host` params.  
-
-```
-var users = [{name: 'A'}, {name: 'B'}, {name: 'C'}]
-apoc.insert(users).then(function (response) {
     console.log(response)
 }, function (fail) {
     console.log(fail)
@@ -125,6 +114,17 @@ query.exec().then(function (response) {
     console.log(fail)
 })
 
+```
+
+**apoc.insert()** accepts an array of objects to be inserted, and optional `port` and `host` params.  
+
+```
+var users = [{name: 'A'}, {name: 'B'}, {name: 'C'}]
+apoc.insert(users).then(function (response) {
+    console.log(response)
+}, function (fail) {
+    console.log(fail)
+})
 ```
 
 **From the commandline**
