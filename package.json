@@ -1,6 +1,6 @@
 {
   "name": "apoc",
-  "version": "1.0.0",
+  "version": "2.0.0-alpha",
   "description": "Making Cypher queries dynamic and powerful",
   "main": "index.js",
   "bin": {
@@ -8,7 +8,8 @@
   },
   "preferGlobal": "true",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "node_modules/standard/bin/cmd.js",
+    "test": "node_modules/mocha/bin/mocha test"
   },
   "repository": {
     "type": "git",
@@ -31,11 +32,18 @@
   "dependencies": {
     "bcrypt": "^0.8.0",
     "commander": "^2.3.0",
+    "debug": "^2.2.0",
+    "notevil": "^1.0.0",
+    "path-extra": "^1.0.3",
     "q": "^1.0.1",
-    "superagent": "^0.18.2"
+    "safe-eval": "^0.1.0",
+    "superagent": "^0.18.2",
+    "yamljs": "^0.2.3"
   },
   "devDependencies": {
-    "chai": "^1.9.1",
-    "mocha": "^1.21.4"
+    "chai": "^3.2.0",
+    "chai-as-promised": "^5.1.0",
+    "mocha": "^1.21.4",
+    "standard": "^5.1.1"
   }
 }

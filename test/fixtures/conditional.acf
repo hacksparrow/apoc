@@ -1,0 +1,5 @@
+if gid
+  MATCH (g: Group { gid: %gid% }) RETURN g
+else
+  MATCH (g: Group { gid: 'default' }) RETURN g
+endif

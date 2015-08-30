@@ -1,0 +1,5 @@
+create (g:XApocTestUserX {
+  name: 'Apoc',
+  secret: '`bcrypt.hashSync('sekr37', bcrypt.genSaltSync(10))`'
+})
+

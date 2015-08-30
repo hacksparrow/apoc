@@ -1,0 +1,18 @@
+// multi-line support with an empty line
+
+CREATE(n:ApocTest { type: 'multiple', name: '%name%', age: '%age%'}) RETURN n
+
+MATCH (n) RETURN n LIMIT 1
+
+CREATE (n:ApocTest { type: 'multiple', name: 'Aankh' })
+
+CREATE (a:ApocTest { type: 'multiple', name: 'Kitab' }) CREATE (b:ApocTest { type: 'multiple', name: 'Book' }) CREATE (a)-[:MEANS]->(b)
+
+CREATE (a:ApocTest { type: 'multiple', name: 'Naina' })
+CREATE (b:ApocTest { type: 'multiple', name: 'Eye' })
+CREATE (a)-[:MEANS]->(b)
+
+MATCH (a:ApocTest { type: 'multiple', name: 'Aankh' })
+MATCH (b:ApocTest { type: 'multiple', name: 'Eye' })
+CREATE (c:ApocTest { type: 'multiple', name: 'Chakchu' })
+CREATE (a)-[:MEANS]->(b)<-[:MEANS]-(c)

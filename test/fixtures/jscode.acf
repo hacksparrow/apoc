@@ -1,0 +1,1 @@
+CREATE(n:ApocTest { pi: `22/7`, floor: `Math.floor(22/7)` }) RETURN n

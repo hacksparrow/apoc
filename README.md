@@ -22,6 +22,28 @@ As a command-line tool:
 $ npm install apoc -g
 ```
 
+## Configuration
+
+Apoc will look for your neo4j configuration details in two places - environment variables and apoc.yml in your home directory, in that order.
+
+**Environment variables**
+
+NEO4J_HOST
+NEO4J_PORT
+NEO4J_USERNAME
+NEO4J_PASSWORD
+
+**apoc.yml**:
+
+```
+host: 192.168.0.8
+port: 2902
+username: neo4j
+password: neo4j
+```
+
+Hostname and port will default to 127.0.0.1 and 4747, respectively.
+
 ## Apoc Cypher File
 
 An Apoc Cypher file is a text file with **.acf** extension, which contains Cypher queries in it with extended acf features. Here is an example.
@@ -30,9 +52,9 @@ The contents of the main acf file:
 
 ```
 create (m: ApocTestMember {
-    id: '`Date.now()`', // JavaScript code
-    name: 'El Capitan',
-    twitter: '%twitter%' // template code
+  id: '`Date.now()`', // JavaScript code
+  name: 'El Capitan',
+  twitter: '%twitter%' // template code
 })
 
 // groups
@@ -46,8 +68,8 @@ The contents of groups.acf:
 
 ```
 create (g:ApocTestGroup {
-    name: 'Hackers',
-    id: '`Math.floor(Math.random()*1000)`'
+  name: 'Hackers',
+  id: '`Math.floor(Math.random()*1000)`'
 })
 ```
 
@@ -55,7 +77,7 @@ The contents of roles.acf:
 
 ```
 create (r: ApocTestRole {
-    name: 'Designer'
+  name: 'Designer'
 })
 ```
 
@@ -90,9 +112,9 @@ var apoc = require('apoc')
 
 // specify a cypher query and execute it on the server
 apoc.query('match (n) return n').exec().then(function (response) {
-    console.log(response)
+  console.log(response)
 }, function (fail) {
-    console.log(fail)
+  console.log(fail)
 })
 ```
 
@@ -109,9 +131,9 @@ console.log(query.text)
 
 // execute the query at localhost:7474
 query.exec().then(function (response) {
-    console.log(response)
+  console.log(response)
 }, function (fail) {
-    console.log(fail)
+  console.log(fail)
 })
 
 ```
@@ -121,9 +143,9 @@ query.exec().then(function (response) {
 ```
 var users = [{name: 'A'}, {name: 'B'}, {name: 'C'}]
 apoc.insert(users).then(function (response) {
-    console.log(response)
+  console.log(response)
 }, function (fail) {
-    console.log(fail)
+  console.log(fail)
 })
 ```
 
@@ -143,8 +165,8 @@ Apoc provides useful and commonly used algorithms and functions.
 
 ```
 create (r1: ApocTestRole {
-    name: 'Designer',
-    id: '`md5('apple')`'
+  name: 'Designer',
+  id: '`md5('apple')`'
 })
 
 ```
@@ -153,16 +175,23 @@ create (r1: ApocTestRole {
 
 ```
 create (g: ApocTestUser {
-    name: 'Apoc',
-    secret: '`bcrypt.hashSync('sekr37', bcrypt.genSaltSync(10))`'
+  name: 'Apoc',
+  secret: '`bcrypt.hashSync('sekr37', bcrypt.genSaltSync(10))`'
 })
 ```
 
 Many more will be added.
 
+## Development
+
+Check out this repo
+
+make sure to run npm test when you have made any changes
+make sure to add your own unit test and run npm test
+
 ## License
 
-Copyright (c) 2014 Hage Yaapa &lt;captain@hacksparrow.com&gt;
+Copyright (c) 2015 Hage Yaapa &lt;captain@hacksparrow.com&gt;
 
 Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
 
