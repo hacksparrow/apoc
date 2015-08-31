@@ -1,1 +1,1 @@
-CREATE (n:ApocText { name: 'Spain' }) RETURN n
+CREATE (n:ApocTest { name: 'Spain' }) RETURN n

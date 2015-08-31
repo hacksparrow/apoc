@@ -1,4 +1,4 @@
-CREATE (n:ApocText { name: 'World' })
+CREATE (n:ApocTest { name: 'World' }) RETURN n
 
 include includes/asia.acf
-includes includes/extra/spain.acf
+include includes/extra/spain.acf

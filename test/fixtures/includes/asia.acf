@@ -1,4 +1,4 @@
-CREATE (n:ApocText { name: 'Asia' }) RETURN n
+CREATE (n:ApocTest { name: 'Asia' }) RETURN n
 
 include misc.acf
 include extra/india.acf

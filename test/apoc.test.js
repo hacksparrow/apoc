@@ -155,9 +155,14 @@ describe('apoc', function () {
       })
     })
 
-    it.skip('should include files', function (done) {
-      apoc.query(acfPath('inclusion.acf')).exec(config).then(function (res) {
-        console.log(res)
+    it('should include files', function (done) {
+      var query = apoc.query(acfPath('inclusion.acf'))
+      query.exec(config).then(function (res) {
+        expect('World').to.equal(res[0].data[0].row[0].name)
+        expect('Asia').to.equal(res[1].data[0].row[0].name)
+        expect('Misc').to.equal(res[2].data[0].row[0].name)
+        expect('India').to.equal(res[3].data[0].row[0].name)
+        expect('Spain').to.equal(res[4].data[0].row[0].name)
         done()
       }, function (fail) {
         done(fail)
