@@ -98,6 +98,19 @@ describe('apoc', function () {
         done(fail)
       })
     })
+
+    it('should execute query with JavaScript code', function (done) {
+      apoc.query('CREATE(n:ApocTest { pi: `22/7`, floor: `Math.floor(22/7)` }) RETURN n')
+      .exec(config).then(function (res) {
+        var result = res[0].data[0].row[0]
+        expect(result.pi).to.equal(22/7)
+        expect(result.floor).to.equal(Math.floor(22/7))
+        done()
+      }, function (fail) {
+        done(fail)
+      })
+    })
+
   })
 
   describe('acf', function () {
@@ -155,7 +168,7 @@ describe('apoc', function () {
       })
     })
 
-    it('should include files', function (done) {
+    it('should execute included files', function (done) {
       var query = apoc.query(acfPath('inclusion.acf'))
       query.exec(config).then(function (res) {
         expect('World').to.equal(res[0].data[0].row[0].name)
