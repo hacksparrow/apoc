@@ -62,10 +62,10 @@ describe('apoc', function () {
     })
   })
 
-  it('should return the query text', function () {
+  it('should return query statements', function () {
     var query = 'MATCH (n) RETURN n'
     var aq = apoc.query(query)
-    expect(query).to.equal(aq.text)
+    expect(query).to.equal(aq.statements[0])
   })
 
   it('should return a promise', function () {
@@ -75,7 +75,7 @@ describe('apoc', function () {
 
   describe('inline', function () {
 
-    it('should execute a simple query', function (done) {
+    it('should execute query', function (done) {
       apoc.query('MATCH (n) RETURN n').exec(config).then(function (res) {
         done()
       }, function (fail) {
@@ -83,7 +83,7 @@ describe('apoc', function () {
       })
     })
 
-    it('should execute a query with variables', function (done) {
+    it('should execute query with variables', function (done) {
       var x = Math.random()
       var y = Math.random()
       var z = Math.random()
@@ -102,16 +102,16 @@ describe('apoc', function () {
 
   describe('acf', function () {
 
-    it('should execute a simple query', function (done) {
+    it('should execute query', function (done) {
       apoc.query(acfPath('simple.acf')).exec(config).then(function (res) {
-        expect('Aankh').to.equal(res[0].data[0].row[0].word)
+        expect('Sun').to.equal(res[0].data[0].row[0].word)
         done()
       }, function (fail) {
         done(fail)
       })
     })
 
-    it('should execute a query with variables', function (done) {
+    it('should execute query with variables', function (done) {
       var x = Math.random()
       var y = Math.random()
       var z = Math.random()
@@ -127,7 +127,7 @@ describe('apoc', function () {
       })
     })
 
-    it('should execute a query with JavaScript code', function (done) {
+    it('should execute query with JavaScript code', function (done) {
       apoc.query(acfPath('jscode.acf')).exec(config).then(function (res) {
         var result = res[0].data[0].row[0]
         expect(result.pi).to.equal(22/7)
@@ -138,9 +138,17 @@ describe('apoc', function () {
       })
     })
 
-    it.skip('should execute multiple queries', function (done) {
-      apoc.query(acfPath('multiline.acf')).exec(config).then(function (res) {
-        console.log(res)
+    it('should execute multiple queries', function (done) {
+      var query = apoc.query(acfPath('multiline.acf'))
+      query.exec(config).then(function (res) {
+        expect('Aankh').to.equal(res[0].data[0].row[0].word)
+        expect('Aankh').to.equal(res[1].data[0].row[0].word)
+        expect('Kitab').to.equal(res[2].data[0].row[0].word)
+        expect('Book').to.equal(res[2].data[0].row[2].word)
+        expect('Naina').to.equal(res[3].data[0].row[0].word)
+        expect('Eye').to.equal(res[3].data[0].row[2].word)
+        expect('Aankh').to.equal(res[4].data[0].row[0].word)
+        expect('Chakchu').to.equal(res[4].data[0].row[3].word)
         done()
       }, function (fail) {
         done(fail)

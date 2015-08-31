@@ -1,8 +1,4 @@
-// in-file query
-create (m: )
+CREATE (n:ApocText { name: 'World' })
 
-// groups
-include includes/groups.acf
-
-// links
-includes includes/extra/links.acf
+include includes/asia.acf
+includes includes/extra/spain.acf

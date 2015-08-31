@@ -1,18 +1,17 @@
-// multi-line support with an empty line
+// anything separated by two line breaks will be executed as independent queries
 
-CREATE(n:ApocTest { type: 'multiple', name: '%name%', age: '%age%'}) RETURN n
+CREATE (n:ApocTest { word: 'Aankh' }) RETURN n
 
 MATCH (n) RETURN n LIMIT 1
 
-CREATE (n:ApocTest { type: 'multiple', name: 'Aankh' })
+CREATE (a:ApocTest { word: 'Kitab' }) CREATE (b:ApocTest { word: 'Book' }) CREATE (a)-[r:MEANS]->(b) RETURN a, r, b
 
-CREATE (a:ApocTest { type: 'multiple', name: 'Kitab' }) CREATE (b:ApocTest { type: 'multiple', name: 'Book' }) CREATE (a)-[:MEANS]->(b)
+CREATE (a:ApocTest { word: 'Naina' })
+CREATE (b:ApocTest { word: 'Eye' })
+CREATE (a)-[r:MEANS]->(b) RETURN a, r, b
 
-CREATE (a:ApocTest { type: 'multiple', name: 'Naina' })
-CREATE (b:ApocTest { type: 'multiple', name: 'Eye' })
-CREATE (a)-[:MEANS]->(b)
-
-MATCH (a:ApocTest { type: 'multiple', name: 'Aankh' })
-MATCH (b:ApocTest { type: 'multiple', name: 'Eye' })
-CREATE (c:ApocTest { type: 'multiple', name: 'Chakchu' })
-CREATE (a)-[:MEANS]->(b)<-[:MEANS]-(c)
+MATCH (a:ApocTest { word: 'Aankh' })
+MATCH (b:ApocTest { word: 'Eye' })
+CREATE (c:ApocTest { word: 'Chakchu' })
+CREATE (a)-[r:MEANS]->(b)<-[s:MEANS]-(c)
+RETURN a, r, s, c
