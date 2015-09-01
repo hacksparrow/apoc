@@ -1,4 +1,4 @@
-// anything separated by two line breaks will be executed as independent queries
+# anything separated by two line breaks will be executed as independent queries
 
 CREATE (n:ApocTest { word: 'Aankh' }) RETURN n
 

@@ -1,4 +1,8 @@
+# Create the world!
 CREATE (n:ApocTest { name: 'World' }) RETURN n
 
+# Details about Asia
 include includes/asia.acf
+
+# Details about Spain
 include includes/extra/spain.acf

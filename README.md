@@ -1,12 +1,13 @@
 Apoc
 ====
 
-Apoc is a node module and a command-line tool to make Cypher queries dynamic and powerful. It adds the following features on top of Cypher.
+Apoc is a node module and a command-line tool for making dynamic Cypher queries. Using its **Apoc Cypher Format* (ACF), it adds the following features on top of Cypher.
 
-* Comments using `//`
+* Comments using `#`
 * JavaScript code within backticks
 * Variables within %% (when used as a node module)
-* Include other acf files from the main file
+* Multiple query statements
+* Include other ACF files
 
 ## Installation
 
@@ -24,29 +25,31 @@ $ npm install apoc -g
 
 ## Configuration
 
-Apoc will look for your neo4j configuration details in two places - environment variables and apoc.yml in your home directory, in that order.
+Apoc will look for your Neo4j configuration details in two places - `.apoc.yml` file in your home directory and in your shell's environment variables.
 
-**Environment variables**
-
-NEO4J_HOST
-NEO4J_PORT
-NEO4J_USERNAME
-NEO4J_PASSWORD
-
-**apoc.yml**:
+**.apoc.yml**:
 
 ```
+protocol: http
 host: 192.168.0.8
 port: 2902
 username: neo4j
 password: neo4j
 ```
 
-Hostname and port will default to 127.0.0.1 and 4747, respectively.
+**Environment variables**
+
+NEO4J_PROTOCOL=http
+NEO4J_HOST=192.168.0.8
+NEO4J_PORT=7474
+NEO4J_USERNAME=neo4j
+NEO4J_PASSWORD=j4neo
+
+The value define din the environment variables will take precedence over the values set in `.apoc.yml`. `host` and `port` will default to 127.0.0.1 and 7474, respectively.
 
 ## Apoc Cypher File
 
-An Apoc Cypher file is a text file with **.acf** extension, which contains Cypher queries in it with extended acf features. Here is an example.
+An Apoc Cypher file is a plain-text file with a .acf extension, which contains Cypher queries in it with extended ACF.
 
 The contents of the main acf file:
 
