@@ -123,7 +123,7 @@ Simple example of using an inline query:
 ```js
 var apoc = require('apoc')
 var query = apoc.query('MATCH (n) RETURN n')
-console.log(query.statements)
+console.log(query.statements) // array of statements in this query
 query.exec().then(function (result) {
   console.log(result)
 }, function (fail) {
@@ -135,7 +135,7 @@ Simple example of using an ACF file query:
 
 ```js
 var query = apoc.query('./test/fixtures/multiline.acf')
-console.log(query.statements)
+console.log(query.statements) // array of statements in this query
 query.exec().then(function (result) {
   console.log(result)
 }, function (fail) {
