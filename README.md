@@ -95,17 +95,17 @@ With respect to this ACF file, Apoc will look for a sibling directory named `inc
 ### Variable placeholders
 
 ```
-MATCH (n:%animalType%) RETURN n
+MATCH (n:%type%) RETURN n
 ```
 
-Variable placeholders are marked with a variable name between %%. The variable placeholder is replaced with the corresponding variable value, when it is passed in an object as the second parameter of an apoc query.
+Variable placeholders are marked with a variable name between %%. The variable placeholder is replaced with the corresponding variable value, when it is passed in a **variables** object as the second parameter of an apoc query.
 
 ```
 var apoc = require('apoc')
-var query = apoc.query('MATCH (n:%animalType%) RETURN n', { animalType: 'Dog' })
+var query = apoc.query('MATCH (n:%type%) RETURN n', { type: 'Dog' })
 ```
 
-becomes:
+resulting query:
 
 ```
 MATCH (n:Dog) RETURN n
@@ -116,6 +116,28 @@ MATCH (n:Dog) RETURN n
 ```
 CREATE (n:Animal { time: `Date.now()` }) RETURN n
 ```
+
+Apoc will interpret any string within backticks as JavaScript code, and try to execute it. However, the API is limited only to the core JavaScript API provided by V8, hence it has no access to node's APIs or the objects created by you. 
+
+In case you want to make any external object available to the JavaScript code, you can pass in a **context** object as the third parameter to the apoc query.
+
+```
+var apoc = require('apoc')
+var query = apoc.query('CREATE (n:Info { node: "`versions.node`", sum: `add(40, 1)` }) RETURN n', {}, {
+  versions: process.versions,
+  add: function(a, b) {
+    return a + b
+  }
+})
+```
+
+resulting query:
+
+```
+CREATE (n:Status { node: '0.10.36', sum: 41 }) RETURN n
+```
+
+The variables and the context objects maintain their order in an apoc query. Therefore, the variables object (even if empty) should always preceed the context object.
 
 ### Line breaks
 
