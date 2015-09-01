@@ -9,8 +9,9 @@ describe('apoc config reader', function () {
 
   it('should read config data from a config file', function (done) {
     var configObj = {
-      host: '1.2.3.4',
-      port: 123456,
+      protocol: 'http',
+      host: 'localhost',
+      port: 7474,
       username: 'neo4j',
       password: 'j4neo'
     }
@@ -23,8 +24,9 @@ describe('apoc config reader', function () {
 
   it('should read config data from environment variables', function (done) {
     var configObj = {
-      host: '9.8.7.6',
-      port: '9876',
+      protocol: 'http',
+      host: 'localhost',
+      port: '7474',
       username: 'neo4j',
       password: 'j4neo'
     }
@@ -42,6 +44,7 @@ describe('apoc config reader', function () {
 
 function createConfigFile(config) {
   var content = ''
+  content += 'protocol: ' + config.protocol + '\n'
   content += 'host: ' + config.host + '\n'
   content += 'port: ' + config.port + '\n'
   content += 'username: ' + config.username + '\n'

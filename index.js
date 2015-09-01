@@ -3,13 +3,12 @@
 var path = require('path')
 var pkg = require(__dirname + '/package.json')
 var program = require('commander')
-var executeCommand = require(__dirname + '/lib/executor.js')
+var query = require(__dirname + '/lib/commands/query.js')
 require(__dirname + '/lib/crypto.js')
 
 program
 .version(pkg.version)
-.option('-h, --host [host]', 'Host. Defaults to localhost')
-.option('-p, --port [port]', 'Port. Defaults to 1337')
+.option('-v, --verbose', 'Verbose response messages')
 .parse(process.argv)
 
 // commandline tool
@@ -21,10 +20,22 @@ if (require.main === module) {
     var ext = path.extname(cypherFilePath)
 
     // having an extension helps to ensure we are using the right file
-    if (ext === 'acf') {
-      executeCommand(cypherFilePath)
+    if (ext === '.acf') {
+      var config = require(__dirname + '/lib/config-reader.js')
+      query(cypherFilePath).exec(config).then(function (res) {
+        var counted = res.length > 1 ? 'statements' : 'statement'
+        console.log('Query executed successfully with %d %s', res.length, counted)
+        if (program.verbose) {
+          console.log('')
+          console.log(JSON.stringify(res))
+          console.log('')
+        }
+      }, function (fail) {
+        if (program.verbose) console.log(fail)
+        else console.log(fail.message)
+      })
     } else {
-      console.log('File type ".%s" not supported', ext)
+      console.log('File type "%s" not supported', ext)
     }
   }
 } else {
