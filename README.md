@@ -31,7 +31,10 @@ When installed as a commandline tool, you will be able to execute ACF files from
 
 ## Configuration
 
-Apoc will look for your Neo4j configuration details in two places - `.apoc.yml` file in your home directory and in your shell's environment variables.
+Apoc will look for your Neo4j configuration details in two places:
+
+1. `.apoc.yml` file in your home directory
+2. Shell's environment variables.
 
 **Sample .apoc.yml**:
 
