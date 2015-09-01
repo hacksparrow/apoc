@@ -233,7 +233,7 @@ If the ACF query above was in a file named `query.acf`, it would be re-written t
 
 ```js
 var apoc = require('apoc')
-apoc.query(__dirname + '/query.acf', {}, {}, {
+apoc.query(__dirname + '/query.acf', {}, {
   versions: process.versions,
   add: function(a, b) {
     return a + b
@@ -252,7 +252,7 @@ apoc.query(__dirname + '/query.acf', {}, {}, {
 $ apoc populate.acf
 ```
 
-Using the `apoc` command, execute ACF files like they were shell scripts or batch files.
+Using the `apoc` command, execute ACF files like they were shell scripts or batch files. The ability to include ACF files and execute multiple queries together make this a very useful tool.
 
 ## License (MIT)
 
