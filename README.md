@@ -121,7 +121,7 @@ Apoc will interpret any string within backticks as JavaScript code, and try to e
 
 In case you want to make any external object available to the JavaScript code, you can pass in a **context** object as the third parameter to the apoc query.
 
-```
+```js
 var apoc = require('apoc')
 var acf = 'CREATE (n:Info { node: "`versions.node`", sum: `add(40, 1)` }) RETURN n'
 var query = apoc.query(acf, {}, {
@@ -184,6 +184,7 @@ query.exec().then(function (result) {
 Simple example of using an ACF file query:
 
 ```js
+var apoc = require('apoc')
 var query = apoc.query('./test/fixtures/multiline.acf')
 console.log(query.statements) // array of statements in this query
 query.exec().then(function (result) {
@@ -200,9 +201,9 @@ The `apoc` module exposes a single method called `query` with the following sign
 |Parameter|Description
 |----|----------
 |**inline query**| Inline Cypher / ACF query. ACF queries should be accompanied by their `variable` and / or `context` objects.
-|**acf file**| Path to a .acf file. ACF queries in the file should be accompanied by their `variable` and / or `context` objects.
-|**variables**| Object of variables to be used with ACF queries. A variable placeholder is marked with enclosing %%.
-|**context**| Object of variables and functions, which are made available to the JavaScript code in ACF queries.
+|**acf file**| Path to an ACF file. ACF queries in the file should be accompanied by their `variable` and / or `context` objects.
+|**variables**| An object of variables to be used with ACF queries. A variable placeholder is marked with enclosing %%.
+|**context**| An object of variables and functions, which are made available to the JavaScript code in ACF queries.
 
 The `query()` method returns an object with these two objects:
 
@@ -211,13 +212,47 @@ The `query()` method returns an object with these two objects:
 |**statements**| Array of Cypher statements generated for this query.
 |**exec**| A method for executing the generated Cypher query. The generated query is not executed, till this method is called. It accepts an optional options object, which can be used to overwrite the `protocol`, `host`, `port`, `username`, and the `password` values. It returns a promise.
 
+Here is a more elaborate example of using the apoc module:
+
+```js
+var apoc = require('apoc')
+apoc.query('CREATE(n:ApocTest { node: "`versions.node`", sum: `add(40, 1)` }) RETURN n', {}, {
+  versions: process.versions,
+  add: function(a, b) {
+    return a + b
+  }
+})
+.exec(config).then(function (result) {
+  console.log(result)
+}, function (fail) {
+  done(fail)
+})
+```
+
+If the ACF query above was in a file named `query.acf`, it would be re-written this way:
+
+```js
+var apoc = require('apoc')
+apoc.query(__dirname + '/query.acf', {}, {}, {
+  versions: process.versions,
+  add: function(a, b) {
+    return a + b
+  }
+})
+.exec(config).then(function (result) {
+  console.log(result)
+}, function (fail) {
+  done(fail)
+})
+```
+
 ### From the command-line
 
 ```
 $ apoc populate.acf
 ```
 
-Execute ACF files with `apoc` like they were shell scripts or batch files.
+Using the `apoc` command, execute ACF files like they were shell scripts or batch files.
 
 ## License (MIT)
 
