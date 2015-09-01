@@ -1,7 +1,7 @@
 Apoc
 ====
 
-Apoc is a node module and a command-line tool for making dynamic Cypher queries. Using its **Apoc Cypher Format* (ACF), it adds the following features on top of Cypher.
+Apoc is a node module and a command-line tool for making dynamic Cypher queries. Using its **Apoc Cypher Format** (ACF), it adds the following features on top of Cypher.
 
 * Comments using `#`
 * JavaScript code within backticks
