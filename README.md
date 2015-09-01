@@ -138,7 +138,7 @@ resulting query:
 CREATE (n:Status { node: '0.10.36', sum: 41 }) RETURN n
 ```
 
-The variables and the context objects maintain their order in an apoc query. Therefore, the variables object (even if empty) should always preceed the context object.
+The variables and the context objects maintain their order in an apoc query. Therefore, the variables object (even if empty) should always preceed the context object, if you want to specify a context object.
 
 ### Line breaks
 
@@ -195,14 +195,21 @@ query.exec().then(function (result) {
 
 The `apoc` module exposes a single method called `query` with the following signature:
 
-**apoc(query | apoc file [,variables] [,context])**
+**query(inline query | acf file [,variables] [,context])**
 
 |Parameter|Description
 |----|----------
-|**query**| Cypher / ACF query. ACF queries should be accompanied by their `variable` and / or `context` objects.
-|**apoc file**| Path to a .acf file. ACF queries in the file should be accompanied by their `variable` and / or `context` objects.
-|**variables**| Object of variables to be used with ACF queries. A variable placeholder is marked with enclosing %%. For example: `"%username%"`, will become `"yaapa"`, if `{username:"yaapa"}` was used.
+|**inline query**| Inline Cypher / ACF query. ACF queries should be accompanied by their `variable` and / or `context` objects.
+|**acf file**| Path to a .acf file. ACF queries in the file should be accompanied by their `variable` and / or `context` objects.
+|**variables**| Object of variables to be used with ACF queries. A variable placeholder is marked with enclosing %%.
 |**context**| Object of variables and functions, which are made available to the JavaScript code in ACF queries.
+
+The `query()` method returns an object with these two objects:
+
+|Object|Description
+|----|----------
+|**statements**| Array of Cypher statements generated for this query.
+|**exec**| A method for executing the generated Cypher query. The generated query is not executed, till this method is called. It accepts an optional options object, which can be used to overwrite the `protocol`, `host`, `port`, `username`, and the `password` values. It returns a promise.
 
 ### From the command-line
 
