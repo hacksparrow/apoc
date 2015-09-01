@@ -94,16 +94,18 @@ With respect to this ACF file, Apoc will look for a sibling directory named `inc
 
 ### Variable placeholders
 
-Variable placeholders are marked with a variable name between %%. The variable placeholder is replaced with the corresponding variable value, when it is passed in an object as the second parameter of an apoc query.
-
 ```
 MATCH (n:%animalType%) RETURN n
 ```
+
+Variable placeholders are marked with a variable name between %%. The variable placeholder is replaced with the corresponding variable value, when it is passed in an object as the second parameter of an apoc query.
 
 ```
 var apoc = require('apoc')
 var query = apoc.query('MATCH (n:%animalType%) RETURN n', { animalType: 'Dog' })
 ```
+
+becomes:
 
 ```
 MATCH (n:Dog) RETURN n
