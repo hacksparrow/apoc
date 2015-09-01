@@ -10,12 +10,10 @@ var port = config.port
 var username = config.username
 var password = config.password
 var encodedAuth = util.getEncodedAuth(username, password)
+var crypto = require('crypto')
 
 var chai = require('chai')
 var expect = chai.expect
-var chaiAsPromised = require('chai-as-promised');
-    chai.use(chaiAsPromised);
-    chai.should();
 
 // before anything else, make sure the database server is running and we can connect to it
 before(function (done) {
@@ -111,6 +109,19 @@ describe('apoc', function () {
       })
     })
 
+    it('should execute query with enhanced JavaScript API', function (done) {
+      apoc.query('CREATE(n:ApocTest { node: "`versions.node`", md5: "`md5("x")`" }) RETURN n',
+      {}, { versions: process.versions, md5: md5 })
+      .exec(config).then(function (res) {
+        var result = res[0].data[0].row[0]
+        expect(result.node).to.equal(process.versions.node)
+        expect(result.md5).to.equal(md5('x'))
+        done()
+      }, function (fail) {
+        done(fail)
+      })
+    })
+
   })
 
   describe('acf', function () {
@@ -151,7 +162,19 @@ describe('apoc', function () {
       })
     })
 
-    it('should execute multiple queries', function (done) {
+    it('should execute query with JavaScript code with context object', function (done) {
+      apoc.query(acfPath('jscode-context.acf'), {}, { versions: process.versions, md5: md5 })
+      .exec(config).then(function (res) {
+        var result = res[0].data[0].row[0]
+        expect(result.node).to.equal(process.versions.node)
+        expect(result.md5).to.equal(md5('x'))
+        done()
+      }, function (fail) {
+        done(fail)
+      })
+    })
+
+    it('should execute multiline queries', function (done) {
       var query = apoc.query(acfPath('multiline.acf'))
       query.exec(config).then(function (res) {
         expect('Aankh').to.equal(res[0].data[0].row[0].word)
@@ -168,7 +191,7 @@ describe('apoc', function () {
       })
     })
 
-    it('should execute included files', function (done) {
+    it('should execute queries using included files', function (done) {
       var query = apoc.query(acfPath('inclusion.acf'))
       query.exec(config).then(function (res) {
         expect('World').to.equal(res[0].data[0].row[0].name)
@@ -188,4 +211,8 @@ describe('apoc', function () {
 
 function acfPath(name) {
   return __dirname + '/fixtures/' + name
+}
+
+function md5(input) {
+  return crypto.createHash('md5').update(input).digest('hex')
 }

@@ -24,12 +24,13 @@ describe('apoc config reader', function () {
 
   it('should read config data from environment variables', function (done) {
     var configObj = {
-      protocol: 'http',
+      protocol: 'https',
       host: 'localhost',
       port: '7474',
       username: 'neo4j',
       password: 'j4neo'
     }
+    env.NEO4J_PROTOCOL = configObj.protocol,
     env.NEO4J_HOST = configObj.host,
     env.NEO4J_PORT = configObj.port,
     env.NEO4J_USERNAME = configObj.username,

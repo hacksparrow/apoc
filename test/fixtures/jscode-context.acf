@@ -1,0 +1,1 @@
+CREATE(n:ApocTest { node: "`versions.node`", md5: "`md5("x")`" }) RETURN n

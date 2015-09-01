@@ -36,13 +36,12 @@
     "notevil": "^1.0.0",
     "path-extra": "^1.0.3",
     "q": "^1.0.1",
-    "safe-eval": "^0.1.0",
+    "safe-eval": "^0.2.0",
     "superagent": "^0.18.2",
     "yamljs": "^0.2.3"
   },
   "devDependencies": {
     "chai": "^3.2.0",
-    "chai-as-promised": "^5.1.0",
     "mocha": "^1.21.4",
     "standard": "^5.1.1"
   }
