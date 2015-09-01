@@ -90,7 +90,7 @@ The contents of `includes/extra/spain.acf`:
 CREATE (n:ApocTest { name: 'Spain' }) RETURN n
 ```
 
-With respect to this ACF file, Apoc will look for a sibling directory named `includes` and a child directory named `extra` within it, and include the files specified in the ACF file.
+With respect to this ACF file, Apoc will look for a sibling directory named `includes` and a child directory named `extra` within `includes`, and include the files specified in the ACF file.
 
 ### Line breaks
 
