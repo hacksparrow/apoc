@@ -124,7 +124,7 @@ describe('apoc', function () {
 
   })
 
-  describe('acf', function () {
+  describe('acf file', function () {
 
     it('should execute query', function (done) {
       apoc.query(acfPath('simple.acf')).exec(config).then(function (res) {
@@ -199,6 +199,23 @@ describe('apoc', function () {
         expect('Misc').to.equal(res[2].data[0].row[0].name)
         expect('India').to.equal(res[3].data[0].row[0].name)
         expect('Spain').to.equal(res[4].data[0].row[0].name)
+        done()
+      }, function (fail) {
+        done(fail)
+      })
+    })
+
+  })
+
+  describe('acfscript', function () {
+
+    it('should parse variables', function (done) {
+      var query = apoc.query(acfPath('acfscript.acf'))
+      query.exec(config).then(function (res) {
+        expect(22 / 7).to.equal(res[0].data[0].row[0].pi)
+        expect(Math.floor(22 / 7)).to.equal(res[0].data[0].row[0].floor)
+        expect('ApocTest').to.equal(res[1].data[0].row[0].label)
+        expect(Math.floor(22 / 7)).to.equal(res[1].data[0].row[0].floor)
         done()
       }, function (fail) {
         done(fail)
