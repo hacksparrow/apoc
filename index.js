@@ -4,7 +4,6 @@ var path = require('path')
 var pkg = require(__dirname + '/package.json')
 var program = require('commander')
 var query = require(__dirname + '/lib/commands/query.js')
-require(__dirname + '/lib/crypto.js')
 
 program
 .version(pkg.version)
