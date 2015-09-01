@@ -30,10 +30,8 @@
     "database"
   ],
   "dependencies": {
-    "bcrypt": "^0.8.0",
     "commander": "^2.3.0",
     "debug": "^2.2.0",
-    "notevil": "^1.0.0",
     "path-extra": "^1.0.3",
     "q": "^1.0.1",
     "safe-eval": "^0.2.0",
