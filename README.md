@@ -118,6 +118,8 @@ Want to see some sample ACF files? Look under the `test/fixtures` directory of t
 
 ### As a node module
 
+Here is a quick preview of how the Apoc API looks like. Details will be explained in the next section.
+
 Simple example of using an inline query:
 
 ```js
@@ -143,10 +145,16 @@ query.exec().then(function (result) {
 })
 ```
 
-The `apoc` module exposes a method called `query`.
+The `apoc` module exposes a single method called `query` with the following signature:
 
-**apoc(query | apoc file, [variables], [context])
+**apoc(query | apoc file [,variables] [,context])**
 
+|Parameter|Description
+|----|----------
+|**query**| Cypher / ACF query. ACF queries should be accompanied by their `variable` and / or `context` objects.
+|**apoc file**| Path to a .acf file. ACF queries should be accompanied by their `variable` and / or `context` objects.
+|**variables**| Objects of variables to be used in ACF queries. A variable placeholder is marked with enclosing %%.
+|**context**| Object of variables and functions, which are made available to the JavaScript code in ACF queries.
 
 ### From the command-line
 
