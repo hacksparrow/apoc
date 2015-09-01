@@ -75,7 +75,7 @@ include includes/asia.acf
 include includes/extra/spain.acf
 ```
 
-The contents of includes/asia.acf:
+The contents of `includes/asia.acf`:
 
 ```
 CREATE (n:ApocTest { name: 'Asia' }) RETURN n
@@ -84,7 +84,7 @@ include misc.acf
 include extra/india.acf
 ```
 
-The contents of includes/extra/spain.acf:
+The contents of `includes/extra/spain.acf`:
 
 ```
 CREATE (n:ApocTest { name: 'Spain' }) RETURN n
