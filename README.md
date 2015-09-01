@@ -5,7 +5,7 @@ Apoc is a node module and a command-line tool for making dynamic Cypher queries.
 
 * Comments using `#`
 * JavaScript code within backticks
-* Variables within %% (when used as a node module)
+* Variables between %% (when used as a node module)
 * Multiple query statements in one file
 * Ability to include other ACF files
 
@@ -92,6 +92,29 @@ CREATE (n:ApocTest { name: 'Spain' }) RETURN n
 
 With respect to this ACF file, Apoc will look for a sibling directory named `includes` and a child directory named `extra` within `includes`, and include the files specified in the ACF file.
 
+### Variable placeholders
+
+Variable placeholders are marked with a variable name between %%. The variable placeholder is replaced with the corresponding variable value, when it is passed in an object as the second parameter of an apoc query.
+
+```
+MATCH (n:%animalType%) RETURN n
+```
+
+```
+var apoc = require('apoc')
+var query = apoc.query('MATCH (n:%animalType%) RETURN n', { animalType: 'Dog' })
+```
+
+```
+MATCH (n:Dog) RETURN n
+```
+
+### JavaScript Code
+
+```
+CREATE (n:Animal { time: `Date.now()` }) RETURN n
+```
+
 ### Line breaks
 
 A single line break can be used to aesthetically break long query statements. Each line is understood as a part of the same query statement.
@@ -152,8 +175,8 @@ The `apoc` module exposes a single method called `query` with the following sign
 |Parameter|Description
 |----|----------
 |**query**| Cypher / ACF query. ACF queries should be accompanied by their `variable` and / or `context` objects.
-|**apoc file**| Path to a .acf file. ACF queries should be accompanied by their `variable` and / or `context` objects.
-|**variables**| Objects of variables to be used in ACF queries. A variable placeholder is marked with enclosing %%.
+|**apoc file**| Path to a .acf file. ACF queries in the file should be accompanied by their `variable` and / or `context` objects.
+|**variables**| Object of variables to be used with ACF queries. A variable placeholder is marked with enclosing %%. For example: `"%username%"`, will become `"yaapa"`, if `{username:"yaapa"}` was used.
 |**context**| Object of variables and functions, which are made available to the JavaScript code in ACF queries.
 
 ### From the command-line
