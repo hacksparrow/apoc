@@ -60,7 +60,7 @@ The value defined in the environment variables will take precedence over the val
 
 ## Apoc Cypher File
 
-An Apoc Cypher file is a plain-text file with a .acf extension, which contains ACF queries. ACF is a superset of Cypher queries, as explained at the beginning of this document.
+An Apoc Cypher file is a plain-text file with a .acf extension, which contains Cypher / ACF queries.
 
 Example of an ACF file:
 
