@@ -125,8 +125,8 @@ In case you want to make any external object available to the JavaScript code, y
 var apoc = require('apoc')
 var acf = 'CREATE (n:Info { node: "`versions.node`", sum: `add(40, 1)` }) RETURN n'
 var query = apoc.query(acf, {}, {
-  versions: process.versions,
-  add: function(a, b) {
+  versions: process.versions, // node API
+  add: function(a, b) { // custom function
     return a + b
   }
 })
