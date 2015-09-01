@@ -1,4 +1,4 @@
-/* global describe, it */
+/* global describe, it, before, afterEach */
 
 var request = require('superagent')
 var apoc = require(__dirname + '/..')
@@ -17,7 +17,7 @@ var expect = chai.expect
 
 // before anything else, make sure the database server is running and we can connect to it
 before(function (done) {
-  var path = 'http://' + host + ':' + port + '/db'
+  var path = protocol + '://' + host + ':' + port + '/db'
   request.post(path)
   .set('Accept', 'application/json')
   .set('X-Stream', 'true')
@@ -35,7 +35,7 @@ before(function (done) {
 
 describe('apoc', function () {
 
-  afterEach(function(done) {
+  afterEach(function (done) {
     apoc.query('MATCH (a:ApocTest) OPTIONAL MATCH (a)-[r]-(b:ApocTest) DELETE a, r, b')
     .exec(config).then(function (res) {
       if (res.errors) {
@@ -101,8 +101,8 @@ describe('apoc', function () {
       apoc.query('CREATE(n:ApocTest { pi: `22/7`, floor: `Math.floor(22/7)` }) RETURN n')
       .exec(config).then(function (res) {
         var result = res[0].data[0].row[0]
-        expect(result.pi).to.equal(22/7)
-        expect(result.floor).to.equal(Math.floor(22/7))
+        expect(result.pi).to.equal(22 / 7)
+        expect(result.floor).to.equal(Math.floor(22 / 7))
         done()
       }, function (fail) {
         done(fail)
@@ -154,8 +154,8 @@ describe('apoc', function () {
     it('should execute query with JavaScript code', function (done) {
       apoc.query(acfPath('jscode.acf')).exec(config).then(function (res) {
         var result = res[0].data[0].row[0]
-        expect(result.pi).to.equal(22/7)
-        expect(result.floor).to.equal(Math.floor(22/7))
+        expect(result.pi).to.equal(22 / 7)
+        expect(result.floor).to.equal(Math.floor(22 / 7))
         done()
       }, function (fail) {
         done(fail)
@@ -209,10 +209,10 @@ describe('apoc', function () {
 
 })
 
-function acfPath(name) {
+function acfPath (name) {
   return __dirname + '/fixtures/' + name
 }
 
-function md5(input) {
+function md5 (input) {
   return crypto.createHash('md5').update(input).digest('hex')
 }

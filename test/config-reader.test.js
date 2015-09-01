@@ -30,10 +30,10 @@ describe('apoc config reader', function () {
       username: 'neo4j',
       password: 'j4neo'
     }
-    env.NEO4J_PROTOCOL = configObj.protocol,
-    env.NEO4J_HOST = configObj.host,
-    env.NEO4J_PORT = configObj.port,
-    env.NEO4J_USERNAME = configObj.username,
+    env.NEO4J_PROTOCOL = configObj.protocol
+    env.NEO4J_HOST = configObj.host
+    env.NEO4J_PORT = configObj.port
+    env.NEO4J_USERNAME = configObj.username
     env.NEO4J_PASSWORD = configObj.password
     var config = reader()
     expect(config).to.eql(configObj)
@@ -43,7 +43,7 @@ describe('apoc config reader', function () {
 
 })
 
-function createConfigFile(config) {
+function createConfigFile (config) {
   var content = ''
   content += 'protocol: ' + config.protocol + '\n'
   content += 'host: ' + config.host + '\n'
@@ -53,11 +53,11 @@ function createConfigFile(config) {
   fs.writeFileSync(__dirname + '/apoc-config.yml', content)
 }
 
-function deleteConfigFile() {
+function deleteConfigFile () {
   fs.unlinkSync(__dirname + '/apoc-config.yml')
 }
 
-function deleteEnvVars() {
+function deleteEnvVars () {
   env.NEO4J_HOST = null
   env.NEO4J_PORT = null
   env.NEO4J_USERNAME = null
