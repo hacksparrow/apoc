@@ -48,11 +48,13 @@ password: neo4j
 
 **Environment variables**
 
+```
 NEO4J_PROTOCOL=http
 NEO4J_HOST=192.168.0.5
 NEO4J_PORT=7474
 NEO4J_USERNAME=neo4j
 NEO4J_PASSWORD=j4neo
+```
 
 The value defined in the environment variables will take precedence over the values set in the `.apoc.yml` file. `host` and `port` will default to 127.0.0.1 and 7474, respectively.
 
