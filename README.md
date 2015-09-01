@@ -6,8 +6,10 @@ Apoc is a node module and a command-line tool for making dynamic Cypher queries.
 * Comments using `#`
 * JavaScript code within backticks
 * Variables within %% (when used as a node module)
-* Multiple query statements
-* Include other ACF files
+* Multiple query statements in one file
+* Ability to include other ACF files
+
+Apoc is not a mapper (ORM, ODM, ONM, OxM) of any kind, nor does it provide any "friendly" or "improved" transaction methods on top of the Neo4j REST API. It is just a tool for enhancing your experience with Cypher. You will still need to write your Cypher queries, but Apoc will make them more powerful and much easier to use.
 
 ## Installation
 
@@ -17,17 +19,21 @@ As a node module:
 $ npm install apoc --save
 ```
 
-As a command-line tool:
+When installed as a node module, you can either directly pass Cypher queries to Apoc or load an ACF file with Cypher queries for Apoc to execute.
+
+As a commandline tool:
 
 ```
 $ npm install apoc -g
 ```
 
+When installed as a commandline tool, you will be able to execute ACF files from the command-line, using the `apoc` command.
+
 ## Configuration
 
 Apoc will look for your Neo4j configuration details in two places - `.apoc.yml` file in your home directory and in your shell's environment variables.
 
-**.apoc.yml**:
+**Sample .apoc.yml**:
 
 ```
 protocol: http
@@ -40,157 +46,110 @@ password: neo4j
 **Environment variables**
 
 NEO4J_PROTOCOL=http
-NEO4J_HOST=192.168.0.8
+NEO4J_HOST=192.168.0.5
 NEO4J_PORT=7474
 NEO4J_USERNAME=neo4j
 NEO4J_PASSWORD=j4neo
 
-The value define din the environment variables will take precedence over the values set in `.apoc.yml`. `host` and `port` will default to 127.0.0.1 and 7474, respectively.
+The value defined in the environment variables will take precedence over the values set in the `.apoc.yml` file. `host` and `port` will default to 127.0.0.1 and 7474, respectively.
 
 ## Apoc Cypher File
 
-An Apoc Cypher file is a plain-text file with a .acf extension, which contains Cypher queries in it with extended ACF.
+An Apoc Cypher file is a plain-text file with a .acf extension, which contains ACF queries. ACF is a superset of Cypher queries, as explained at the beginning of this document.
 
-The contents of the main acf file:
-
-```
-create (m: ApocTestMember {
-  id: '`Date.now()`', // JavaScript code
-  name: 'El Capitan',
-  twitter: '%twitter%' // template code
-})
-
-// groups - can include files relative to the acf file ONLY
-include groups.acf
-
-// roles
-include roles.acf
-```
-
-The contents of groups.acf:
+Example of an ACF file:
 
 ```
-create (g:ApocTestGroup {
-  name: 'Hackers',
-  id: '`Math.floor(Math.random()*1000)`'
-})
+# Create the world
+CREATE (n:ApocTest { name: 'World' }) RETURN n
+
+# Details about Asia
+include includes/asia.acf
+
+# Details about Spain
+include includes/extra/spain.acf
 ```
 
-The contents of roles.acf:
+The contents of includes/asia.acf:
 
 ```
-create (r: ApocTestRole {
-  name: 'Designer'
-})
+CREATE (n:ApocTest { name: 'Asia' }) RETURN n
+
+include misc.acf
+include extra/india.acf
 ```
 
-The consolidated content is generated as a single query, which makes the identifiers defined in individual files global.
+The contents of includes/extra/spain.acf:
 
-Future versions of apoc will enable including acf files from non-main files and writing Cypher queries even easier.
+```
+CREATE (n:ApocTest { name: 'Spain' }) RETURN n
+```
+
+With respect to this ACF file, Apoc will look for a sibling directory named `includes` and a child directory named `extra` within it, and include the files specified in the ACF file.
+
+### Line breaks
+
+A single line break can be used to aesthetically break long query statements. Each line is understood as a part of the same query statement.
+
+```
+CREATE (a:ApocTest { word: 'Naina' })
+CREATE (b:ApocTest { word: 'Eye' })
+CREATE (a)-[r:MEANS]->(b) RETURN a, b
+```
+
+A empty linebreak in an ACF file is used to separate query statements. All of the following are indepedent, separate queries.
+
+```
+CREATE (n:ApocTest { lang: 'hi', word: 'Naina' }) RETURN n
+
+CREATE (n:ApocTest { lang: 'es', word: 'Ojo' }) RETURN n
+
+CREATE (n:ApocTest { lang: 'it', word: 'Occhio' }) RETURN n
+```
+
+Want to see some sample ACF files? Look under the `test/fixtures` directory of this project.
 
 ## Usage
 
 ### As a node module
 
-Apoc exposes two methods:
+Simple example of using an inline query:
 
-|Name|Description
-|----|----------
-|**apoc.query**(query \| apoc file, [variables], [port], [host])| For making custom queries.
-|**apoc.insert**(objects, [port], [host])| For insert (including bulk inserts). Returns a promise.
-
-**apoc.query()** accepts a cypher query, or an acf file path and an optional object to with the variables for the template system.
-
-It returns an object with the following properties:
-
-|Name|Description
-|----|----------
-|**text**|Text of the consolidated query.
-|**exec()**|Method to execute the query at the server. It returns a promise.
-
-Usage example (inline cypher query):
-
-```
+```js
 var apoc = require('apoc')
-
-// specify a cypher query and execute it on the server
-apoc.query('match (n) return n').exec().then(function (response) {
-  console.log(response)
+var query = apoc.query('MATCH (n) RETURN n')
+console.log(query.statements)
+query.exec().then(function (result) {
+  console.log(result)
 }, function (fail) {
   console.log(fail)
 })
 ```
 
-Usage example (with acf file):
+Simple example of using an ACF file query:
 
-```
-var apoc = require('apoc')
-
-// generate the consolidated cypher query from the acf file
-var query = apoc.query('index.acf', { twitter: '@hacksparrow' })
-
-// the consolidated query
-console.log(query.text)
-
-// execute the query at localhost:7474
-query.exec().then(function (response) {
-  console.log(response)
-}, function (fail) {
-  console.log(fail)
-})
-
-```
-
-**apoc.insert()** accepts an array of objects to be inserted, and optional `port` and `host` params.  
-
-```
-var users = [{name: 'A'}, {name: 'B'}, {name: 'C'}]
-apoc.insert(users).then(function (response) {
-  console.log(response)
+```js
+var query = apoc.query('./test/fixtures/multiline.acf')
+console.log(query.statements)
+query.exec().then(function (result) {
+  console.log(result)
 }, function (fail) {
   console.log(fail)
 })
 ```
 
-### From the commandline
+The `apoc` module exposes a method called `query`.
+
+**apoc(query | apoc file, [variables], [context])
+
+
+### From the command-line
 
 ```
-$ apoc index.acf
+$ apoc populate.acf
 ```
 
-Execute acf files with apoc like they were shell scripts. Excellent for writing your queries in the acf files and executing them from the commandline, while taking advantage of acf features.
-
-## API
-
-Apoc provides useful and commonly used algorithms and functions.
-
-**md5**
-
-```
-create (r1: ApocTestRole {
-  name: 'Designer',
-  id: '`md5('apple')`'
-})
-
-```
-
-**[bcrypt](https://www.npmjs.org/package/bcrypt)**
-
-```
-create (g: ApocTestUser {
-  name: 'Apoc',
-  secret: '`bcrypt.hashSync('sekr37', bcrypt.genSaltSync(10))`'
-})
-```
-
-Many more will be added.
-
-## Development
-
-Check out this repo
-
-make sure to run npm test when you have made any changes
-make sure to add your own unit test and run npm test
+Execute ACF files with `apoc` like they were shell scripts or batch files.
 
 ## License (MIT)
 

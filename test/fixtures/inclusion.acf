@@ -1,4 +1,4 @@
-# Create the world!
+# Create the world
 CREATE (n:ApocTest { name: 'World' }) RETURN n
 
 # Details about Asia
