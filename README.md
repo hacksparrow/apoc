@@ -102,7 +102,7 @@ CREATE (b:ApocTest { word: 'Eye' })
 CREATE (a)-[r:MEANS]->(b) RETURN a, b
 ```
 
-A empty linebreak in an ACF file is used to separate query statements. All of the following are indepedent, separate queries.
+A empty linebreak in an ACF file is used to separate query statements. All of the following are interpreted and executed as independent, separate queries.
 
 ```
 CREATE (n:ApocTest { lang: 'hi', word: 'Naina' }) RETURN n
