@@ -140,6 +140,21 @@ CREATE (n:Status { node: '0.10.36', sum: 41 }) RETURN n
 
 The variables and the context objects maintain their order in an apoc query. Therefore, the variables object (even if empty) should always preceed the context object, if you want to specify a context object.
 
+### ACF variables
+
+You can define variables in the ACF file using the `var` keyword. The value of the variable can also be a JavaScript expression.
+
+```
+var label = ApocTest
+var floor=`Math.floor(22/7)`
+
+CREATE(a:%label% { pi: `22/7`, floor: %floor% }) RETURN a
+
+CREATE(b:%label% { label: "%label%", floor: %floor% }) RETURN b
+```
+
+ACF variables take precedence over those specified by the variables query parameter.
+
 ### Line breaks
 
 A single line break can be used to aesthetically break long query statements. Each line is understood as a part of the same query statement.
