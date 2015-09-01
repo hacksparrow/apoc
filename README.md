@@ -19,7 +19,7 @@ As a node module:
 $ npm install apoc --save
 ```
 
-When installed as a node module, you can either directly pass Cypher queries to Apoc or load an ACF file with Cypher queries for Apoc to execute.
+When installed as a node module, you can either directly pass Cypher / ACF queries to Apoc or load an ACF file with Cypher / ACF queries for Apoc to execute.
 
 As a commandline tool:
 
