@@ -1,4 +1,5 @@
 var name = Sun
+var galaxy = Milky Way
 
 CREATE (n:ApocTest { name: '%name%' }) RETURN n
 

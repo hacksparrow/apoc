@@ -245,10 +245,22 @@ describe('apoc', function () {
     })
 
     it('should support local variables', function (done) {
-      var query = apoc.query(acfPath('locals.acf'))
+      var query = apoc.query(acfPath('included-variables.acf'))
       query.exec(config).then(function (res) {
         expect('Sun').to.equal(res[0].data[0].row[0].name)
         expect('Misc').to.equal(res[1].data[0].row[0].name)
+        done()
+      }, function (fail) {
+        done(fail)
+      })
+    })
+
+    it('should inherit variables', function (done) {
+      var query = apoc.query(acfPath('included-variables.acf'))
+      query.exec(config).then(function (res) {
+        expect('Sun').to.equal(res[0].data[0].row[0].name)
+        expect('Misc').to.equal(res[1].data[0].row[0].name)
+        expect('Milky Way').to.equal(res[1].data[0].row[0].galaxy)
         done()
       }, function (fail) {
         done(fail)
