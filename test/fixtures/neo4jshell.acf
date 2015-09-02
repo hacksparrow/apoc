@@ -1,0 +1,16 @@
+// This is a comment
+
+BEGIN
+create (:Fruit {name: "Apple" });
+create (:Fruit {name:"Orange"});
+//commit 
+rollback
+
+match (n) 
+return n;
+
+export name=Apple
+match (n:Fruit)  where n.name = {name} return n;
+
+export names=["Orange","Apple"]
+match (n:Fruit) where n.name IN {names} return n;
