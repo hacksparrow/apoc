@@ -174,8 +174,25 @@ describe('apoc', function () {
       })
     })
 
-    it('should execute multiline queries', function (done) {
-      var query = apoc.query(acfPath('multiline.acf'))
+    it('should execute multiple queries, separated with empty newlines', function (done) {
+      var query = apoc.query(acfPath('newlines.acf'))
+      query.exec(config).then(function (res) {
+        expect('Aankh').to.equal(res[0].data[0].row[0].word)
+        expect('Aankh').to.equal(res[1].data[0].row[0].word)
+        expect('Kitab').to.equal(res[2].data[0].row[0].word)
+        expect('Book').to.equal(res[2].data[0].row[2].word)
+        expect('Naina').to.equal(res[3].data[0].row[0].word)
+        expect('Eye').to.equal(res[3].data[0].row[2].word)
+        expect('Aankh').to.equal(res[4].data[0].row[0].word)
+        expect('Chakchu').to.equal(res[4].data[0].row[3].word)
+        done()
+      }, function (fail) {
+        done(fail)
+      })
+    })
+
+    it('should execute multiple queries, separated with semicolons', function (done) {
+      var query = apoc.query(acfPath('semicolons.acf'))
       query.exec(config).then(function (res) {
         expect('Aankh').to.equal(res[0].data[0].row[0].word)
         expect('Aankh').to.equal(res[1].data[0].row[0].word)

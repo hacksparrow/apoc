@@ -1,0 +1,15 @@
+// anything separated by semicolons will be executed as independent queries
+
+CREATE (n:ApocTest { word: 'Aankh' }) RETURN n;
+MATCH (n:ApocTest) RETURN n LIMIT 1;
+CREATE (a:ApocTest { word: 'Kitab' })
+CREATE (b:ApocTest { word: 'Book' })
+CREATE (a)-[r:MEANS]->(b) RETURN a, r, b;
+CREATE (a:ApocTest { word: 'Naina' })
+CREATE (b:ApocTest { word: 'Eye' })
+CREATE (a)-[r:MEANS]->(b) RETURN a, r, b;
+MATCH (a:ApocTest { word: 'Aankh' })
+MATCH (b:ApocTest { word: 'Eye' })
+CREATE (c:ApocTest { word: 'Chakchu' })
+CREATE (a)-[r:MEANS]->(b)<-[s:MEANS]-(c)
+RETURN a, r, s, c;

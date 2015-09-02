@@ -2,7 +2,7 @@
 
 CREATE (n:ApocTest { word: 'Aankh' }) RETURN n
 
-MATCH (n) RETURN n LIMIT 1
+MATCH (n:ApocTest) RETURN n LIMIT 1
 
 CREATE (a:ApocTest { word: 'Kitab' }) CREATE (b:ApocTest { word: 'Book' }) CREATE (a)-[r:MEANS]->(b) RETURN a, r, b
 

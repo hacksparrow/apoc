@@ -3,12 +3,12 @@ Apoc
 
 Apoc is a node module and a command-line tool for making dynamic Cypher queries. Using its **Apoc Cypher Format** (ACF), it adds the following features on top of Cypher.
 
-* Comments using `#`
+* Comments using `#` or `//`
 * JavaScript code within backticks
 * Variables between %% (when used as a node module)
-* Multiple query statements in one file
+* Multiple query statements in a file
 * Ability to include other ACF files
-* Local variables in the ACF files
+* Local variables in ACF files
 
 Apoc is not a mapper (ORM, ODM, ONM, OxM) of any kind, nor does it provide any "friendly" or "improved" transaction methods on top of the Neo4j REST API. It is just a tool for enhancing your experience with Cypher. You will still need to write your Cypher queries, but Apoc will make them more powerful and much easier to use.
 
@@ -156,7 +156,7 @@ CREATE(b:%label% { label: "%label%", floor: %floor% }) RETURN b
 
 ACF variables take precedence over those specified by the variables query parameter.
 
-### Line breaks
+### Multiple query statements
 
 A single line break can be used to aesthetically break long query statements. Each line is understood as a part of the same query statement.
 
@@ -166,7 +166,15 @@ CREATE (b:ApocTest { word: 'Eye' })
 CREATE (a)-[r:MEANS]->(b) RETURN a, b
 ```
 
-A empty linebreak in an ACF file is used to separate query statements. All of the following are interpreted and executed as independent, separate queries.
+A semicolon at the end of the statement is used to separate query statements.
+
+```
+CREATE (n:ApocTest { lang: 'hi', word: 'Naina' }) RETURN n;
+CREATE (n:ApocTest { lang: 'es', word: 'Ojo' }) RETURN n;
+CREATE (n:ApocTest { lang: 'it', word: 'Occhio' }) RETURN n;
+```
+
+A empty linebreak can also be used in place of a semicolon to seprate query statements. All of the following are interpreted and executed as independent, separate queries.
 
 ```
 CREATE (n:ApocTest { lang: 'hi', word: 'Naina' }) RETURN n
