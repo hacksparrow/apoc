@@ -4,3 +4,8 @@ var floor=`Math.floor(22/7)`
 CREATE(a:%label% { pi: `22/7`, floor: %floor% }) RETURN a
 
 CREATE(b:%label% { label: "%label%", floor: %floor% }) RETURN b
+
+# this is a comment
+#include includes/misc.acf
+// this is another comment
+//include includes/misc.acf

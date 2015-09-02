@@ -213,8 +213,8 @@ describe('apoc', function () {
       query.exec(config).then(function (res) {
         expect('World').to.equal(res[0].data[0].row[0].name)
         expect('Asia').to.equal(res[1].data[0].row[0].name)
-        expect('Misc').to.equal(res[2].data[0].row[0].name)
-        expect('India').to.equal(res[3].data[0].row[0].name)
+        expect('India').to.equal(res[2].data[0].row[0].name)
+        expect('Misc').to.equal(res[3].data[0].row[0].name)
         expect('Spain').to.equal(res[4].data[0].row[0].name)
         done()
       }, function (fail) {
@@ -225,6 +225,11 @@ describe('apoc', function () {
   })
 
   describe('acfscript', function () {
+
+    it('should support comments', function () {
+      var query = apoc.query(acfPath('acfscript.acf'))
+      expect(query.statements.length).to.equal(2)
+    })
 
     it('should parse variables', function (done) {
       var query = apoc.query(acfPath('acfscript.acf'))
