@@ -8,6 +8,7 @@ var query = require(__dirname + '/lib/commands/query.js')
 program
 .version(pkg.version)
 .option('-v, --verbose', 'Verbose response messages')
+.option('-d, --debug', 'Print query statements')
 .parse(process.argv)
 
 // commandline tool
@@ -21,15 +22,18 @@ if (require.main === module) {
     // having an extension helps to ensure we are using the right file
     if (ext === '.acf') {
       var config = require(__dirname + '/lib/config-reader.js')
-      query(cypherFilePath).exec(config).then(function (res) {
+      var query = query(cypherFilePath)
+      query.exec(config).then(function (res) {
         var counted = res.length > 1 ? 'statements' : 'statement'
         console.log('Query executed successfully with %d %s', res.length, counted)
+        if (program.debug) debug(query)
         if (program.verbose) {
           console.log('')
           console.log(JSON.stringify(res))
           console.log('')
         }
       }, function (fail) {
+        if (program.debug) debug(query)
         if (program.verbose) console.log(fail)
         else console.log(fail.message)
       })
@@ -39,4 +43,10 @@ if (require.main === module) {
   }
 } else {
   module.exports = require(__dirname + '/lib/apoc-module.js')
+}
+
+function debug(query) {
+  console.log()
+  console.log(query.statements)
+  console.log()
 }
