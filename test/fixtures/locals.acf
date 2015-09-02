@@ -1,3 +1,5 @@
-var name = Misc
+var name = Sun
 
 CREATE (n:ApocTest { name: '%name%' }) RETURN n
+
+include includes/misc.acf

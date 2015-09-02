@@ -154,7 +154,9 @@ CREATE(a:%label% { pi: `22/7`, floor: %floor% }) RETURN a
 CREATE(b:%label% { label: "%label%", floor: %floor% }) RETURN b
 ```
 
-ACF variables take precedence over those specified by the variables query parameter.
+Variables with the same name declared in an included file takes precedence over the one declared in its parent file.
+
+ACF variables take precedence over those specified by the `variables` query parameter.
 
 ### Multiple query statements
 
