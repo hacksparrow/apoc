@@ -278,6 +278,21 @@ $ apoc populate.acf
 
 Using the `apoc` command, execute ACF files like they were shell scripts or batch files. The ability to include ACF files and execute multiple queries together make this a very useful tool.
 
+Commandline options:
+
+```
+$ apoc --help
+
+  Usage: apoc [options]
+
+  Options:
+
+    -h, --help     output usage information
+    -V, --version  output the version number
+    -v, --verbose  Verbose response messages
+    -q, --query    Print query statements
+```
+
 ## License (MIT)
 
 Copyright (c) 2015 Hage Yaapa
