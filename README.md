@@ -9,6 +9,7 @@ Apoc is a node module and a command-line tool for making dynamic Cypher queries.
 * Multiple query statements in a file
 * Ability to include other ACF files
 * Local variables in ACF files
+* Global variables
 
 Apoc is not a mapper (ORM, ODM, ONM, OxM) of any kind, nor does it provide any "friendly" or "improved" transaction methods on top of the Neo4j REST API. It is just a tool for enhancing your experience with Cypher. You will still need to write your Cypher queries, but Apoc will make them more powerful and much easier to use.
 
