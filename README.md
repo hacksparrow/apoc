@@ -112,6 +112,8 @@ resulting query:
 MATCH (n:Dog) RETURN n
 ```
 
+If the variable for a palceholder is not found, the placeholder will be left intact.
+
 ### JavaScript Code
 
 ```
@@ -143,7 +145,9 @@ The variables and the context objects maintain their order in an apoc query. The
 
 ### ACF variables
 
-You can define variables in the ACF file using the `var` keyword. The value of the variable can also be a JavaScript expression.
+**Local variables**
+
+You can define local variables in an ACF file using the `var` keyword. The variables are local to the file and its included files. The value of the variable can also be a JavaScript expression.
 
 ```
 var label = ApocTest
@@ -157,6 +161,20 @@ CREATE(b:%label% { label: "%label%", floor: %floor% }) RETURN b
 Variables with the same name declared in an included file takes precedence over the one declared in its parent file.
 
 ACF variables take precedence over those specified by the `variables` query parameter.
+
+**Global variables**
+
+You can define global variables using the `global` keyword. Like local variables, the values of global variables can be JavaScript expressions too.
+
+```
+global title = Universal Brotherhood
+```
+
+This global variable could be defined in last of the 100th included file, but would still be available to the root file and other files.
+
+Global variables redefined at the lower order of inclusion will overwrite the existing value.
+
+Minimize the use of global variables, they can introduce hard to debug behaviors.
 
 ### Multiple query statements
 

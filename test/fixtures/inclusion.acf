@@ -1,3 +1,5 @@
+var galaxy = Milky Way
+
 # Create the world
 CREATE (n:ApocTest { name: 'World' }) RETURN n
 

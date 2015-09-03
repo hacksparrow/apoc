@@ -7,5 +7,7 @@ CREATE(b:%label% { label: "%label%", floor: %floor% }) RETURN b
 
 # this is a comment
 #include includes/misc.acf
+#`2+4`
 // this is another comment
 //include includes/misc.acf
+//`Math.rand()`

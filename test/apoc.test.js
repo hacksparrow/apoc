@@ -215,7 +215,11 @@ describe('apoc', function () {
         expect('Asia').to.equal(res[1].data[0].row[0].name)
         expect('India').to.equal(res[2].data[0].row[0].name)
         expect('Misc').to.equal(res[3].data[0].row[0].name)
-        expect('Spain').to.equal(res[4].data[0].row[0].name)
+        expect('Milky Way').to.equal(res[3].data[0].row[0].galaxy)
+        expect('foo').to.equal(res[4].data[0].row[0].type)
+        expect('Misc').to.equal(res[4].data[0].row[0].name)
+        expect('Milky Way').to.equal(res[4].data[0].row[0].galaxy)
+        expect('Spain').to.equal(res[5].data[0].row[0].name)
         done()
       }, function (fail) {
         done(fail)
@@ -261,6 +265,20 @@ describe('apoc', function () {
         expect('Sun').to.equal(res[0].data[0].row[0].name)
         expect('Misc').to.equal(res[1].data[0].row[0].name)
         expect('Milky Way').to.equal(res[1].data[0].row[0].galaxy)
+        expect('foo').to.equal(res[2].data[0].row[0].type)
+        expect('Misc').to.equal(res[2].data[0].row[0].name)
+        expect('Milky Way').to.equal(res[2].data[0].row[0].galaxy)
+        done()
+      }, function (fail) {
+        done(fail)
+      })
+    })
+
+    it('should support global variables', function (done) {
+      var query = apoc.query(acfPath('globals.acf'))
+      query.exec(config).then(function (res) {
+        expect('Universal Brotherhood').to.equal(res[0].data[0].row[0].title)
+        expect('Peace and prosperity for mankind').to.equal(res[0].data[0].row[0].subtitle)
         done()
       }, function (fail) {
         done(fail)

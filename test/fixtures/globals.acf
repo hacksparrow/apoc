@@ -1,0 +1,6 @@
+# the title and subtitle comes from the included file
+# it doesn't matter if it is include before or after the statement
+
+CREATE (n:ApocTest { title: '%title%', subtitle: '%subtitle%' }) RETURN n
+
+include includes/extra/deeper/bar.acf
