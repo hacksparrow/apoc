@@ -1,6 +1,6 @@
 var name = Sun
 var galaxy = Milky Way
 
-CREATE (n:ApocTest { name: '%name%' }) RETURN n
+CREATE (n:ApocTest { name: '{name}' }) RETURN n
 
 include includes/misc.acf
