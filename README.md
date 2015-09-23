@@ -239,7 +239,18 @@ query.exec().then(function (result) {
 })
 ```
 
-The `apoc` module exposes a single method called `query` with the following signature:
+The `apoc` module expose two methods `plugin` and `query`.
+
+`plugin` with the following signature:
+
+**plugin(phase, function)**
+
+phase refers to the phase - pre / post
+The plugin function receives the following arguments `inline query | acf file [,variables] [,context]`
+
+It must return a string which might be the modified `inline query or acf file`
+
+`query` with the following signature:
 
 **query(inline query | acf file [,variables] [,context])**
 

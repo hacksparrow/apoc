@@ -226,6 +226,15 @@ describe('apoc', function () {
       })
     })
 
+    it('should support multiple transactions', function (done) {
+      var query = apoc.query(acfPath('multiple-transactions.acf'))
+      query.exec(config).then(function (res) {
+        console.log(res)
+        done()
+      }, function (fail) {
+        done(fail)
+      })
+    })
   })
 
   describe('acfscript', function () {
@@ -290,16 +299,9 @@ describe('apoc', function () {
   describe.skip('neo4j-shell script', function () {
 
     it('should parse variables', function (done) {
-      var query = apoc.query(acfPath('neo4jshell.acf'))
-      query.exec(config).then(function (res) {
-        expect(22 / 7).to.equal(res[0].data[0].row[0].pi)
-        expect(Math.floor(22 / 7)).to.equal(res[0].data[0].row[0].floor)
-        expect('ApocTest').to.equal(res[1].data[0].row[0].label)
-        expect(Math.floor(22 / 7)).to.equal(res[1].data[0].row[0].floor)
-        done()
-      }, function (fail) {
-        done(fail)
-      })
+      apoc.plugin('start', __dirname + '/plugins/apoc-neo4j-shell.js')
+      apoc.query(acfPath('neo4j-shell.acf'))
+      done()
     })
 
   })

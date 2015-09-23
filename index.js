@@ -1,9 +1,15 @@
 #! /usr/bin/env node
 
+/* globals global */
+
+'use strict'
+
+global.APOC_GLOBAL_VARS = {}
+
 var path = require('path')
 var pkg = require(__dirname + '/package.json')
 var program = require('commander')
-var apoc = require(__dirname + '/lib/commands/query.js')
+var commandlineApoc = require(__dirname + '/lib/commandline-query.js')
 
 program
 .version(pkg.version)
@@ -22,7 +28,7 @@ if (require.main === module) {
     // having an extension helps to ensure we are using the right file
     if (ext === '.acf') {
       var config = require(__dirname + '/lib/config-reader.js')
-      var query = apoc(cypherFilePath)
+      var query = commandlineApoc(cypherFilePath)
       query.exec(config).then(function (res) {
         var counted = res.length > 1 ? 'statements' : 'statement'
         console.log('Query executed successfully with %d %s', res.length, counted)

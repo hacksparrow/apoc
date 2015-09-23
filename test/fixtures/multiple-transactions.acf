@@ -1,0 +1,5 @@
+CREATE (n:ApocTest { word: 'Sun' }) RETURN n
+-
+CREATE (n:ApocTest { word: 'Moon' }) RETURN n
+-
+CREATE (n:ApocTest { word: 'Star' }) RETURN n
