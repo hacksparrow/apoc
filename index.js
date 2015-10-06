@@ -27,24 +27,40 @@ if (require.main === module) {
 
     // having an extension helps to ensure we are using the right file
     if (ext === '.acf') {
+
       var config = require(__dirname + '/lib/config-reader.js')
       var query = commandlineApoc(cypherFilePath)
-      query.exec(config).then(function (res) {
-        var counted = res.length > 1 ? 'statements' : 'statement'
-        if (program.query) logQuery(query)
+
+      query.exec(config).then(function (transactions) {
+
+        var statementsCount = 0
+        transactions.forEach(function (transaction) {
+          statementsCount += transaction.length
+        })
+
+        var statementsCounted = statementsCount > 1 ? 'statements' : 'statement'
+
+        var transactionCount = transactions.length
+        var transactionCounted = transactionCount > 1 ? 'transactions' : 'transaction'
+
         if (program.verbose) {
-          console.log('')
-          console.log(JSON.stringify(res))
+          console.log('%s >', transactionCounted.toUpperCase())
+          logQuery(query)
+          console.log('RESULT >\n')
+          console.log(JSON.stringify(transactions))
           console.log('')
         }
-        console.log('Query executed successfully with %d %s', res.length, counted)
+
+        console.log('Query executed successfully with %d %s in %d %s',
+          statementsCount, statementsCounted,
+          transactionCount, transactionCounted)
+
       }, function (fail) {
-        if (program.query) logQuery(query)
-        if (program.verbose) console.log(fail)
+        if (program.verbose) {
+          logQuery(query)
+          console.log(fail)
+        }
         else console.log(fail.message)
-      }, function (transaction) {
-        console.log(transaction)
-        console.log('---------')
       })
     } else {
       console.log('File type "%s" not supported', ext)
@@ -56,6 +72,6 @@ if (require.main === module) {
 
 function logQuery (query) {
   console.log()
-  console.log(query.statements)
+  console.log(query.transactions)
   console.log()
 }
