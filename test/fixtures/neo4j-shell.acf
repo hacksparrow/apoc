@@ -3,8 +3,8 @@
 BEGIN
 create (:Fruit {name: "Apple" });
 create (:Fruit {name:"Orange"});
-//commit 
-rollback
+commit
+//rollback
 
 match (n)
 return n;

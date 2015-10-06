@@ -31,17 +31,20 @@ if (require.main === module) {
       var query = commandlineApoc(cypherFilePath)
       query.exec(config).then(function (res) {
         var counted = res.length > 1 ? 'statements' : 'statement'
-        console.log('Query executed successfully with %d %s', res.length, counted)
         if (program.query) logQuery(query)
         if (program.verbose) {
           console.log('')
           console.log(JSON.stringify(res))
           console.log('')
         }
+        console.log('Query executed successfully with %d %s', res.length, counted)
       }, function (fail) {
         if (program.query) logQuery(query)
         if (program.verbose) console.log(fail)
         else console.log(fail.message)
+      }, function (transaction) {
+        console.log(transaction)
+        console.log('---------')
       })
     } else {
       console.log('File type "%s" not supported', ext)
