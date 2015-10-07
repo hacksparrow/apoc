@@ -245,7 +245,7 @@ The `apoc` module expose two methods `plugin` and `query`.
 
 **plugin(phase, function)**
 
-phase refers to the phase - pre / post
+phase refers to the phase - preprocess / postprocess / result
 The plugin function receives the following arguments `inline query | acf file [,variables] [,context]`
 
 It must return a string which might be the modified `inline query or acf file`
