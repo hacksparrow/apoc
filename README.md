@@ -216,9 +216,12 @@ Here is a quick preview of how the Apoc API looks like. Details will be explaine
 Simple example of using an inline query:
 
 ```js
-var apoc = require('apoc')
+var apoc = require('apoc')({
+  username: 'neo4j',
+  password: 'j4neo'
+})
 var query = apoc.query('MATCH (n) RETURN n')
-console.log(query.statements) // array of statements in this query
+console.log(query.transactions) // array of transactions in this query
 query.exec().then(function (result) {
   console.log(result)
 }, function (fail) {
@@ -229,9 +232,14 @@ query.exec().then(function (result) {
 Simple example of using an ACF file query:
 
 ```js
-var apoc = require('apoc')
+var apoc = require('apoc')({
+  username: 'neo4j',
+  password: 'j4neo',
+  host: '192.168.2.1',
+  port: 7475
+})
 var query = apoc.query('./test/fixtures/multiline.acf')
-console.log(query.statements) // array of statements in this query
+console.log(query.transactions) // array of transactions in this query
 query.exec().then(function (result) {
   console.log(result)
 }, function (fail) {
@@ -239,7 +247,18 @@ query.exec().then(function (result) {
 })
 ```
 
-The `apoc` module expose a single method `query`.
+The `apoc` module expose two methods `plugin` and `query`.
+
+`plugin` with the following signature:
+
+**plugin(phase, function)**
+
+phase refers to the phase - preprocess / postprocess / result
+The plugin function receives the following arguments `inline query | acf file [,variables] [,context]`
+
+It must return a string which might be the modified `inline query or acf file`
+
+`query` with the following signature:
 
 **query(inline query | acf file [,variables] [,context])**
 
@@ -247,7 +266,13 @@ The `apoc` module expose a single method `query`.
 |----|----------
 |**inline query**| Inline Cypher / ACF query. ACF queries should be accompanied by their `variable` and / or `context` objects.
 |**acf file**| Path to an ACF file. ACF queries in the file should be accompanied by their `variable` and / or `context` objects.
-|**variables**| An object of variables to be used with ACF queries. A variable placeholder is marked with enclosing %%.
+|**variables**| An object of variables to be used with ACF queries. A variable placeholder is marked within an opening { and a closing }.
+
+Special note about variables:
+
+* A variable name should be composed of letters, numbers, and the underscore characters only.
+* Variables will not be quoted, quote it yourself where it is supposed to be a string.
+
 |**context**| An object of variables and functions, which are made available to the JavaScript code in ACF queries.
 
 The `query()` method returns an object with these two objects:
@@ -255,19 +280,19 @@ The `query()` method returns an object with these two objects:
 |Object|Description
 |----|----------
 |**statements**| Array of Cypher statements generated for this query.
-|**exec**| A method for executing the generated Cypher query. The generated query is not executed, till this method is called. It accepts an optional options object, which can be used to overwrite the `protocol`, `host`, `port`, `username`, and the `password` values. It returns a promise.
+|**exec**| A method for executing the generated Cypher query. The generated query is not executed, till this method is called. It accepts an optional options object, which can be used to overwrite the default `protocol`, `host`, `port`, `username`, and the `password` values. It returns a promise.
 
 Here is a more elaborate example of using the apoc module:
 
 ```js
-var apoc = require('apoc')
+var apoc = require('apoc')(config)
 apoc.query('CREATE(n:ApocTest { node: "`versions.node`", sum: `add(40, 1)` }) RETURN n', {}, {
   versions: process.versions,
   add: function(a, b) {
     return a + b
   }
 })
-.exec(config).then(function (result) {
+.exec().then(function (result) {
   console.log(result)
 }, function (fail) {
   done(fail)
@@ -277,14 +302,14 @@ apoc.query('CREATE(n:ApocTest { node: "`versions.node`", sum: `add(40, 1)` }) RE
 If the ACF query above was in a file named `query.acf`, it would be re-written this way:
 
 ```js
-var apoc = require('apoc')
+var apoc = require('apoc')(config)
 apoc.query(__dirname + '/query.acf', {}, {
   versions: process.versions,
   add: function(a, b) {
     return a + b
   }
 })
-.exec(config).then(function (result) {
+.exec().then(function (result) {
   console.log(result)
 }, function (fail) {
   done(fail)

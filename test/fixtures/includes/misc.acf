@@ -1,5 +1,5 @@
 var name = Misc
 
-CREATE (n:ApocTest { name: '%name%', galaxy: '%galaxy%' }) RETURN n
+CREATE (n:ApocTest { name: '{name}', galaxy: '{galaxy}' }) RETURN n
 
 include extra/deeper/foo.acf
