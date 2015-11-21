@@ -5,8 +5,9 @@ Apoc is a node module and a command-line tool for making dynamic Cypher queries.
 
 * Comments using `#` or `//`
 * JavaScript code within backticks
-* Variables between %% (when used as a node module)
+* Template variables between `{` and }` (when used as a node module)
 * Multiple query statements in a file
+* Multiple transactions in a file
 * Ability to include other ACF files
 * Local variables in ACF files
 * Global variables
@@ -97,14 +98,14 @@ With respect to this ACF file, Apoc will look for a sibling directory named `inc
 ### Variable placeholders
 
 ```
-MATCH (n:%type%) RETURN n
+MATCH (n:{type}) RETURN n
 ```
 
-Variable placeholders are marked with a variable name between %%. The variable placeholder is replaced with the corresponding variable value, when it is passed in a **variables** object as the second parameter of an apoc query.
+Variable placeholders are marked with a variable name between `{` and `}`. The variable placeholder is replaced with the corresponding variable value, when it is passed in a **variables** object as the second parameter of an apoc query.
 
 ```
 var apoc = require('apoc')
-var query = apoc.query('MATCH (n:%type%) RETURN n', { type: 'Dog' })
+var query = apoc.query('MATCH (n:{type}) RETURN n', { type: 'Dog' })
 ```
 
 resulting query:
@@ -154,9 +155,9 @@ You can define local variables in an ACF file using the `var` keyword. The varia
 var label = ApocTest
 var floor=`Math.floor(22/7)`
 
-CREATE(a:%label% { pi: `22/7`, floor: %floor% }) RETURN a
+CREATE(a:{label} { pi: `22/7`, floor: {floor} }) RETURN a
 
-CREATE(b:%label% { label: "%label%", floor: %floor% }) RETURN b
+CREATE(b:{label} { label: "{label}", floor: {floor} }) RETURN b
 ```
 
 Variables with the same name declared in an included file takes precedence over the one declared in its parent file.
