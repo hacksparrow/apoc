@@ -1,6 +1,6 @@
 {
   "name": "apoc",
-  "version": "3.0.0",
+  "version": "3.0.0-alpha.0",
   "description": "Making Cypher queries dynamic and powerful",
   "main": "index.js",
   "bin": {
