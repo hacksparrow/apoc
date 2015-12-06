@@ -252,12 +252,13 @@ The `apoc` module expose two methods `plugin` and `query`.
 
 `plugin` with the following signature:
 
-**plugin(phase, function)**
+**plugin(plugin object)**
 
-phase refers to the phase - preprocess / postprocess / result
-The plugin function receives the following arguments `inline query | acf file [,variables] [,context]`
+The plugin object has a `phase` and a `code` property. 
 
-It must return a string which might be the modified `inline query or acf file`
+`phase` refers to the phase when the plugin should be executed  - preprocess / postprocess / result.
+
+`code` is a function which implements the plugin functionality. it receives the following arguments `inline query | acf file [,variables] [,context]`. It must return a string which might be the modified `inline query or acf file`
 
 `query` with the following signature:
 
@@ -280,7 +281,7 @@ The `query()` method returns an object with these two objects:
 
 |Object|Description
 |----|----------
-|**statements**| Array of Cypher statements generated for this query.
+|**transactions**| Array of Cypher transactions generated for this query.
 |**exec**| A method for executing the generated Cypher query. The generated query is not executed, till this method is called. It accepts an optional options object, which can be used to overwrite the default `protocol`, `host`, `port`, `username`, and the `password` values. It returns a promise.
 
 Here is a more elaborate example of using the apoc module:
