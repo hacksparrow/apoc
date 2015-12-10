@@ -212,15 +212,14 @@ Want to see some sample ACF files? Look under the `test/fixtures` directory of t
 
 ### As a node module
 
+NOTE: Make sure to set the apoc config using the .apoc.yml file or set them in the environment variable. For details refer to the configuration section.
+
 Here is a quick preview of how the Apoc API looks like. Details will be explained in the next section.
 
 Simple example of using an inline query:
 
 ```js
-var apoc = require('apoc')({
-  username: 'neo4j',
-  password: 'j4neo'
-})
+var apoc = require('apoc')()
 var query = apoc.query('MATCH (n) RETURN n')
 console.log(query.transactions) // array of transactions in this query
 query.exec().then(function (result) {
@@ -233,12 +232,7 @@ query.exec().then(function (result) {
 Simple example of using an ACF file query:
 
 ```js
-var apoc = require('apoc')({
-  username: 'neo4j',
-  password: 'j4neo',
-  host: '192.168.2.1',
-  port: 7475
-})
+var apoc = require('apoc')()
 var query = apoc.query('./test/fixtures/multiline.acf')
 console.log(query.transactions) // array of transactions in this query
 query.exec().then(function (result) {
@@ -256,7 +250,7 @@ The `apoc` module expose two methods `plugin` and `query`.
 
 The plugin object has a `phase` and a `code` property. 
 
-`phase` refers to the phase when the plugin should be executed  - preprocess / postprocess / result.
+`phase` refers to the phase when the plugin should be executed  - pre / post / result.
 
 `code` is a function which implements the plugin functionality. it receives the following arguments `inline query | acf file [,variables] [,context]`. It must return a string which might be the modified `inline query or acf file`
 

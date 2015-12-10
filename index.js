@@ -6,10 +6,10 @@
 
 global.APOC_GLOBAL_VARS = {}
 
-var path = require('path')
-var pkg = require(__dirname + '/package.json')
-var program = require('commander')
-var commandlineApoc = require(__dirname + '/lib/commandline-query.js')
+let path = require('path')
+let pkg = require(__dirname + '/package.json')
+let program = require('commander')
+let commandlineApoc = require(__dirname + '/lib/commandline-query.js')
 
 program
 .version(pkg.version)
@@ -22,26 +22,26 @@ if (require.main === module) {
   if (process.argv.length < 3) {
     program.help()
   } else {
-    var cypherFilePath = process.argv[2]
-    var ext = path.extname(cypherFilePath)
+    let cypherFilePath = process.argv[2]
+    let ext = path.extname(cypherFilePath)
 
     // having an extension helps to ensure we are using the right file
     if (ext === '.acf') {
 
-      var config = require(__dirname + '/lib/config-reader.js')
-      var query = commandlineApoc(cypherFilePath)
+      let config = require(__dirname + '/lib/config-reader.js')
+      let query = commandlineApoc(cypherFilePath)
 
       query.exec(config).then(function (transactions) {
 
-        var statementsCount = 0
+        let statementsCount = 0
         transactions.forEach(function (transaction) {
           statementsCount += transaction.length
         })
 
-        var statementsCounted = statementsCount > 1 ? 'statements' : 'statement'
+        let statementsCounted = statementsCount > 1 ? 'statements' : 'statement'
 
-        var transactionCount = transactions.length
-        var transactionCounted = transactionCount > 1 ? 'transactions' : 'transaction'
+        let transactionCount = transactions.length
+        let transactionCounted = transactionCount > 1 ? 'transactions' : 'transaction'
 
         if (program.verbose) {
           console.log('%s >', transactionCounted.toUpperCase())
