@@ -1,12 +1,11 @@
 {
   "name": "apoc",
-  "version": "3.0.0-alpha.0",
+  "version": "3.0.0-beta.0",
   "description": "Making Cypher queries dynamic and powerful",
   "main": "index.js",
   "bin": {
     "apoc": "index.js"
   },
-  "preferGlobal": "true",
   "scripts": {
     "test": "node_modules/mocha/bin/mocha test"
   },
