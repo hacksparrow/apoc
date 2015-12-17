@@ -7,7 +7,7 @@ let expect = require('chai').expect
 let env = process.env
 let reader = require(__dirname + '/../lib/config-reader.js')
 
-describe('apoc config reader', function () {
+describe('Config reader', function () {
 
   it('should read config data from a config file', function (done) {
     let configObj = {

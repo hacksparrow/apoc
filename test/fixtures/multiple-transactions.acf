@@ -1,4 +1,5 @@
-CREATE (n:ApocTest { word: 'Sun' }) RETURN n
+CREATE (n:ApocTest { word: 'Sun' }) RETURN n;
+CREATE (m:ApocTest { word: 'Galaxy' }) RETURN m;
 -
 CREATE (n:ApocTest { word: 'Moon' }) RETURN n
 -
