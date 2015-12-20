@@ -40,4 +40,14 @@ describe('Apoc', function () {
     expect(apoc.transactions.length).to.equal(2)
   })
 
+  it('should overwrite old query with new', function () {
+    let apoc = new Apoc()
+    let query0 = 'MATCH (n) RETURN'
+    apoc.query(query0)
+    expect(apoc.statements[0]).to.equal(query0)
+    let query1 = 'MATCH (x) RETURN'
+    apoc.query(query1)
+    expect(apoc.statements[0]).to.equal(query1)
+  })
+
 })
