@@ -1,11 +1,36 @@
 Apoc
 ====
 
+## TLDR;
+
+```
+let Apoc = require('apoc')
+let apoc = new Apoc()
+var query = 'CREATE (n:Info { name: "{name}", node: "`versions.node`", sum: `add(40, 1)` }) RETURN n'
+apoc.query(query, { name: 'Apoc' }, {
+  versions: process.versions,
+  add: function(a, b) {
+    return a + b
+  }
+})
+
+console.log(apoc.statements)
+// CREATE (n:Info { name: "Apoc", node: "4.2.1", sum: 41 }) RETURN n
+
+apoc.exec().then(function (result) {
+  console.log(result)
+}, function (fail) {
+  console.log(fail)
+})
+```
+
+---
+
 Apoc is a node module and a command-line tool for making dynamic Cypher queries. Using its **Apoc Cypher Format** (ACF), it adds the following features on top of Cypher.
 
 * Comments using `#` or `//`
 * JavaScript code within backticks
-* Template variables between `{` and }` (when used as a node module)
+* Template variables between `{` and `}` (when used as a node module)
 * Multiple query statements
 * Multiple transactions
 * Ability to include other ACF files
@@ -39,7 +64,7 @@ Apoc will look for your Neo4j configuration details in two places:
 1. `.apoc.yml` file in your home directory
 2. Shell environment variables.
 
-**Sample .apoc.yml**:
+**Sample `.apoc.yml`**:
 
 ```
 protocol: http
@@ -123,7 +148,7 @@ If the variable for a palceholder is not found, the placeholder will be left int
 CREATE (n:Animal { time: `Date.now()` }) RETURN n
 ```
 
-Apoc will interpret any string within backticks as JavaScript code, and try to execute it. However, the API is limited only to the core JavaScript API provided by V8, hence it has no access to node's APIs or the objects created by you. 
+Apoc will interpret any string within backticks (`) as JavaScript code, and try to execute it. However, the API is limited only to the core JavaScript API provided by V8, hence it has no access to node's APIs or the objects created by you. 
 
 In case you want to make any external object available to the JavaScript code, you can pass in a **context** object as the third parameter to the apoc query.
 
@@ -216,7 +241,7 @@ Want to see some sample ACF files? Look under the `test/fixtures` directory of t
 
 ### As a node module
 
-NOTE: Make sure to set the apoc config using the `.apoc.yml` file or set them in the environment variable. For details refer to the configuration section.
+To use apoc as a Node module, make sure to set the apoc config using the `.apoc.yml` file or set them in the environment variable. For details refer to the configuration section.
 
 Here is a quick preview of how the Apoc API looks like. Details will be explained in the next section.
 
@@ -252,29 +277,27 @@ An instance of `Apoc` exposes the following properties and methods.
 
 #### Properties
 
-**statements**
+`statements`
 
 An array of statements in the query in a single-transaction query. It is `undefined` in a multi-transaction query.
 
-**transactions**
+`transactions`
 
 An array of transaction(s), along with their statements, whether single-transaction or multi-transaction query.
 
 #### Methods
 
-**plugin**
-
-`plugin(plugin object)`
+`**plugin**(object)`
 
 The plugin object has a `phase` and a `code` property. 
 
-`phase` refers to the phase when the plugin should be executed  - pre / post / result.
+`phase` refers to the phase when the plugin should be executed  - "pre", "post", "result".
+
+"pre" plugins are executed before the query string is processed.
 
 `code` is a function which implements the plugin functionality. it receives the following arguments `inline query | acf file [,variables] [,context]`. It must return a string which might be the modified `inline query or acf file`
 
-**query**
-
-`query(inline query | acf file [,variables] [,context])`
+`**query**(inline query | acf file [,variables] [,context])`
 
 |Parameter|Description
 |----|----------
@@ -296,11 +319,10 @@ The `query()` method returns an object with these two objects:
 |**transactions**| Array of Cypher transactions generated for this query.
 |**exec**| A method for executing the generated Cypher query. The generated query is not executed, till this method is called. It accepts an optional options object, which can be used to overwrite the default `protocol`, `host`, `port`, `username`, and the `password` values. It returns a promise.
 
-**exec**
-
-`exec(options)`
+`**exec**(options)`
 
 Returns a promise.
+
 
 Here is a more elaborate example of using the apoc module:
 
@@ -339,6 +361,8 @@ apoc.query(__dirname + '/query.acf', {}, {
 ```
 
 ### From the command-line
+
+To use apoc from the command-line, make sure to set the apoc config using the `.apoc.yml` file or set them in the environment variable. For details refer to the configuration section.
 
 ```
 $ apoc populate.acf
