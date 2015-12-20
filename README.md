@@ -6,11 +6,11 @@ Apoc is a node module and a command-line tool for making dynamic Cypher queries.
 * Comments using `#` or `//`
 * JavaScript code within backticks
 * Template variables between `{` and }` (when used as a node module)
-* Multiple query statements in a file
-* Multiple transactions in a file
+* Multiple query statements
+* Multiple transactions
 * Ability to include other ACF files
 * Local variables in ACF files
-* Global variables
+* Global variables in ACF files
 
 Apoc is not a mapper (ORM, ODM, ONM, OxM) of any kind, nor does it provide any "friendly" or "improved" transaction methods on top of the Neo4j REST API. It is just a tool for enhancing your experience with Cypher. You will still need to write your Cypher queries, but Apoc will make them more powerful and much easier to use.
 
@@ -37,7 +37,7 @@ When installed as a commandline tool, you will be able to execute ACF files from
 Apoc will look for your Neo4j configuration details in two places:
 
 1. `.apoc.yml` file in your home directory
-2. Shell's environment variables.
+2. Shell environment variables.
 
 **Sample .apoc.yml**:
 
@@ -104,8 +104,9 @@ MATCH (n:{type}) RETURN n
 Variable placeholders are marked with a variable name between `{` and `}`. The variable placeholder is replaced with the corresponding variable value, when it is passed in a **variables** object as the second parameter of an apoc query.
 
 ```
-var apoc = require('apoc')
-var query = apoc.query('MATCH (n:{type}) RETURN n', { type: 'Dog' })
+let Apoc = require('apoc')
+let apoc = new Apoc()
+apoc.query('MATCH (n:{type}) RETURN n', { type: 'Dog' })
 ```
 
 resulting query:
@@ -127,9 +128,10 @@ Apoc will interpret any string within backticks as JavaScript code, and try to e
 In case you want to make any external object available to the JavaScript code, you can pass in a **context** object as the third parameter to the apoc query.
 
 ```js
-var apoc = require('apoc')
+let Apoc = require('apoc')
+let apoc = new Apoc()
 var acf = 'CREATE (n:Info { node: "`versions.node`", sum: `add(40, 1)` }) RETURN n'
-var query = apoc.query(acf, {}, {
+apoc.query(acf, {}, {
   versions: process.versions, // node API
   add: function(a, b) { // custom function
     return a + b
@@ -150,6 +152,8 @@ The variables and the context objects maintain their order in an apoc query. The
 **Local variables**
 
 You can define local variables in an ACF file using the `var` keyword. The variables are local to the file and its included files. The value of the variable can also be a JavaScript expression.
+
+Note that ACF variables are not quoted.
 
 ```
 var label = ApocTest
@@ -212,17 +216,18 @@ Want to see some sample ACF files? Look under the `test/fixtures` directory of t
 
 ### As a node module
 
-NOTE: Make sure to set the apoc config using the .apoc.yml file or set them in the environment variable. For details refer to the configuration section.
+NOTE: Make sure to set the apoc config using the `.apoc.yml` file or set them in the environment variable. For details refer to the configuration section.
 
 Here is a quick preview of how the Apoc API looks like. Details will be explained in the next section.
 
 Simple example of using an inline query:
 
 ```js
-var apoc = require('apoc')()
-var query = apoc.query('MATCH (n) RETURN n')
-console.log(query.transactions) // array of transactions in this query
-query.exec().then(function (result) {
+var Apoc = require('apoc')
+var apoc = new Apoc()
+apoc.query('MATCH (n) RETURN n')
+console.log(query.statements) // array of statements in this query
+apoc.exec().then(function (result) {
   console.log(result)
 }, function (fail) {
   console.log(fail)
@@ -232,21 +237,34 @@ query.exec().then(function (result) {
 Simple example of using an ACF file query:
 
 ```js
-var apoc = require('apoc')()
-var query = apoc.query('./test/fixtures/multiline.acf')
+var Apoc = require('apoc')
+var apoc = new Apoc()
+apoc.query('./test/fixtures/multi-transactions.acf')
 console.log(query.transactions) // array of transactions in this query
-query.exec().then(function (result) {
+apoc.exec().then(function (result) {
   console.log(result)
 }, function (fail) {
   console.log(fail)
 })
 ```
 
-The `apoc` module expose two methods `plugin` and `query`.
+An instance of `Apoc` exposes the following properties and methods.
 
-`plugin` with the following signature:
+#### Properties
 
-**plugin(plugin object)**
+**statements**
+
+An array of statements in the query in a single-transaction query. It is `undefined` in a multi-transaction query.
+
+**transactions**
+
+An array of transaction(s), along with their statements, whether single-transaction or multi-transaction query.
+
+#### Methods
+
+**plugin**
+
+`plugin(plugin object)`
 
 The plugin object has a `phase` and a `code` property. 
 
@@ -254,9 +272,9 @@ The plugin object has a `phase` and a `code` property.
 
 `code` is a function which implements the plugin functionality. it receives the following arguments `inline query | acf file [,variables] [,context]`. It must return a string which might be the modified `inline query or acf file`
 
-`query` with the following signature:
+**query**
 
-**query(inline query | acf file [,variables] [,context])**
+`query(inline query | acf file [,variables] [,context])`
 
 |Parameter|Description
 |----|----------
@@ -278,10 +296,17 @@ The `query()` method returns an object with these two objects:
 |**transactions**| Array of Cypher transactions generated for this query.
 |**exec**| A method for executing the generated Cypher query. The generated query is not executed, till this method is called. It accepts an optional options object, which can be used to overwrite the default `protocol`, `host`, `port`, `username`, and the `password` values. It returns a promise.
 
+**exec**
+
+`exec(options)`
+
+Returns a promise.
+
 Here is a more elaborate example of using the apoc module:
 
 ```js
-var apoc = require('apoc')(config)
+var Apoc = require('apoc')
+var apoc = new Apoc()
 apoc.query('CREATE(n:ApocTest { node: "`versions.node`", sum: `add(40, 1)` }) RETURN n', {}, {
   versions: process.versions,
   add: function(a, b) {
@@ -298,7 +323,8 @@ apoc.query('CREATE(n:ApocTest { node: "`versions.node`", sum: `add(40, 1)` }) RE
 If the ACF query above was in a file named `query.acf`, it would be re-written this way:
 
 ```js
-var apoc = require('apoc')(config)
+var Apoc = require('apoc')
+var apoc = new Apoc()
 apoc.query(__dirname + '/query.acf', {}, {
   versions: process.versions,
   add: function(a, b) {
@@ -332,7 +358,6 @@ $ apoc --help
     -h, --help     output usage information
     -V, --version  output the version number
     -v, --verbose  Verbose response messages
-    -q, --query    Print query statements
 ```
 
 ## License (MIT)

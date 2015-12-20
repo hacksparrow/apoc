@@ -67,7 +67,7 @@ describe('Inline query', function () {
     })
   })
 
-  it('should execute query with enhanced JavaScript API', function (done) {
+  it('should be executed with enhanced JavaScript API', function (done) {
     let apoc = new Apoc()
     apoc.query('CREATE(n:ApocTest { node: "`versions.node`", md5: "`md5("x")`" }) RETURN n',
     {}, { versions: process.versions, md5: md5 })

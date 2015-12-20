@@ -12,14 +12,28 @@ describe('Apoc', function () {
     expect(apoc.exec()).to.have.property('then')
   })
 
-  it('should return query statements', function () {
+  it('should return `statements` from a single transaction', function () {
+    let apoc = new Apoc()
+    let query = 'MATCH (n) RETURN'
+    apoc.query(query)
+    expect(apoc.statements[0]).to.equal(query)
+  })
+
+  it('should not return `statements` from multiple transactions', function () {
+    let apoc = new Apoc()
+    let query = 'MATCH (n) RETURN n \n--- MATCH (n) RETURN n'
+    apoc.query(query)
+    expect(apoc.statements).to.be.undefined
+  })
+
+  it('should return `transactions` from single-transaction query', function () {
     let apoc = new Apoc()
     let query = 'MATCH (n) RETURN n'
     apoc.query(query)
     expect(query).to.equal(apoc.transactions[0].statements[0])
   })
 
-  it('should return transactions', function () {
+  it('should return `transactions` from multi-transaction query', function () {
     let apoc = new Apoc()
     let query = 'MATCH (n) RETURN n \n--- MATCH (n) RETURN n'
     apoc.query(query)
