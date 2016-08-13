@@ -1,12 +1,14 @@
 Apoc
 ====
 
-## TLDR;
+## Quick examples
+
+As a node module:
 
 ```
 let Apoc = require('apoc')
 let apoc = new Apoc()
-var query = 'CREATE (n:Info { name: "{name}", node: "`versions.node`", sum: `add(40, 1)` }) RETURN n'
+let query = 'CREATE (n:Info { name: "{name}", node: "`versions.node`", sum: `add(40, 1)` }) RETURN n'
 apoc.query(query, { name: 'Apoc' }, {
   versions: process.versions,
   add: function(a, b) {
@@ -24,6 +26,12 @@ apoc.exec().then(function (result) {
 })
 ```
 
+As a commandline tool:
+
+```sh
+$ apoc queries.acf
+```
+
 ---
 
 Apoc is a node module and a command-line tool for making dynamic Cypher queries. Using its **Apoc Cypher Format** (ACF), it adds the following features on top of Cypher.
@@ -34,8 +42,8 @@ Apoc is a node module and a command-line tool for making dynamic Cypher queries.
 * Multiple query statements
 * Multiple transactions
 * Ability to include other ACF files
-* Local variables in ACF files
-* Global variables in ACF files
+* Local variables
+* Global variables
 
 Apoc is not a mapper (ORM, ODM, ONM, OxM) of any kind, nor does it provide any "friendly" or "improved" transaction methods on top of the Neo4j REST API. It is just a tool for enhancing your experience with Cypher. You will still need to write your Cypher queries, but Apoc will make them more powerful and much easier to use.
 
@@ -88,7 +96,7 @@ The value defined in the environment variables will take precedence over the val
 
 ## Apoc Cypher File
 
-An Apoc Cypher file is a plain-text file with a .acf extension, which contains Cypher / ACF queries.
+An Apoc Cypher file is a plain-text file with a `.acf` extension, which contains Cypher / ACF queries.
 
 Example of an ACF file:
 
@@ -126,7 +134,7 @@ With respect to this ACF file, Apoc will look for a sibling directory named `inc
 MATCH (n:{type}) RETURN n
 ```
 
-Variable placeholders are marked with a variable name between `{` and `}`. The variable placeholder is replaced with the corresponding variable value, when it is passed in a **variables** object as the second parameter of an apoc query.
+Variable placeholders are marked with a variable name between `{` and `}`, with no space between them. The variable placeholder is replaced with the corresponding variable value, when it is passed in a **variables** object as the second parameter of an apoc query.
 
 ```
 let Apoc = require('apoc')
@@ -182,7 +190,7 @@ Note that ACF variables are not quoted.
 
 ```
 var label = ApocTest
-var floor=`Math.floor(22/7)`
+var floor = `Math.floor(22/7)`
 
 CREATE(a:{label} { pi: `22/7`, floor: {floor} }) RETURN a
 
@@ -207,7 +215,7 @@ Global variables redefined at the lower order of inclusion will overwrite the ex
 
 Minimize the use of global variables, they can introduce hard to debug behaviors.
 
-### Multiple query statements
+### Aesthetic composition of long query statements
 
 A single line break can be used to aesthetically break long query statements. Each line is understood as a part of the same query statement.
 
@@ -217,7 +225,9 @@ CREATE (b:ApocTest { word: 'Eye' })
 CREATE (a)-[r:MEANS]->(b) RETURN a, b
 ```
 
-A semicolon at the end of the statement is used to separate query statements.
+### Multiple query statements
+
+Use a semicolon to specify multiple query statements.
 
 ```
 CREATE (n:ApocTest { lang: 'hi', word: 'Naina' }) RETURN n;
@@ -225,17 +235,40 @@ CREATE (n:ApocTest { lang: 'es', word: 'Ojo' }) RETURN n;
 CREATE (n:ApocTest { lang: 'it', word: 'Occhio' }) RETURN n;
 ```
 
-A empty linebreak can also be used in place of a semicolon to seprate query statements. All of the following are interpreted and executed as independent, separate queries.
+A empty linebreak can also be used in place of a semicolon to seprate query statements. All of the following are interpreted and executed as independent, separate queries. This is preferable in case of multiple statements with long queries.
 
 ```
-CREATE (n:ApocTest { lang: 'hi', word: 'Naina' }) RETURN n
+CREATE (a:ApocTest { lang: 'hi', word: 'Naina' })
+MATCH (b:ApocTest { word: 'Eye' })
+CREATE (a)-[r:MEANS]->(b) RETURN a, b
 
-CREATE (n:ApocTest { lang: 'es', word: 'Ojo' }) RETURN n
+CREATE (a:ApocTest { lang: 'es', word: 'Ojo' })
+MATCH (b:ApocTest { word: 'Eye' })
+CREATE (a)-[r:MEANS]->(b) RETURN a, b
 
-CREATE (n:ApocTest { lang: 'it', word: 'Occhio' }) RETURN n
+CREATE (a:ApocTest { lang: 'it', word: 'Occhio' })
+MATCH (b:ApocTest { word: 'Eye' })
+CREATE (a)-[r:MEANS]->(b) RETURN a, b
 ```
 
 Want to see some sample ACF files? Look under the `test/fixtures` directory of this project.
+
+### Multiple transactions
+
+Use a single hyphen (`-`) or more to separate queries for multiple transactions.
+
+Example:
+
+```js
+CREATE (n:ApocTest { word: 'Sun' }) RETURN n;
+CREATE (m:ApocTest { word: 'Galaxy' }) RETURN m;
+-
+CREATE (n:ApocTest { word: 'Moon' }) RETURN n
+-
+CREATE (n:ApocTest { word: 'Star' }) RETURN n
+```
+
+The code above will generate three transactions.
 
 ## Usage
 
@@ -275,29 +308,32 @@ apoc.exec().then(function (result) {
 
 An instance of `Apoc` exposes the following properties and methods.
 
-#### Properties
-
-`statements`
-
-An array of statements in the query in a single-transaction query. It is `undefined` in a multi-transaction query.
-
-`transactions`
-
-An array of transaction(s), along with their statements, whether single-transaction or multi-transaction query.
-
 #### Methods
 
-`**plugin**(object)`
+##### `plugin(object)`
 
-The plugin object has a `phase` and a `code` property. 
+Apoc's functionality can be modified by the use of plugins which are executed at various stages of a query.
 
-`phase` refers to the phase when the plugin should be executed  - "pre", "post", "result".
+A plugin object has a `phase` and a `code` property. The `phase` property dictates when the plugin should be executed, and the `code` property contains the plugin implementation.
 
-"pre" plugins are executed before the query string is processed.
+| Phase | Description | Arguments 
+|-------|-------------|-----------
+| pre | Before the query string is processed. | Inline query. | acf file [,variables] [,context]`
+| post | After the query string is processed. | Generated transactions.
+| result | When the result from the server arrives. | Result object.
 
-`code` is a function which implements the plugin functionality. it receives the following arguments `inline query | acf file [,variables] [,context]`. It must return a string which might be the modified `inline query or acf file`
+Here is an example of a plugin, which will change every query to `MATCH (x) RETURN x`.
 
-`**query**(inline query | acf file [,variables] [,context])`
+```js
+{
+  phase: 'pre',
+  code: function (content) {
+    return 'MATCH (x) RETURN x'
+  }
+}
+```
+
+##### `query(inline query | acf file [,variables] [,context])`
 
 |Parameter|Description
 |----|----------
@@ -319,10 +355,9 @@ The `query()` method returns an object with these two objects:
 |**transactions**| Array of Cypher transactions generated for this query.
 |**exec**| A method for executing the generated Cypher query. The generated query is not executed, till this method is called. It accepts an optional options object, which can be used to overwrite the default `protocol`, `host`, `port`, `username`, and the `password` values. It returns a promise.
 
-`**exec**(options)`
+##### `exec(options)`
 
 Returns a promise.
-
 
 Here is a more elaborate example of using the apoc module:
 
@@ -360,15 +395,28 @@ apoc.query(__dirname + '/query.acf', {}, {
 })
 ```
 
+#### Properties
+
+The following properties are set after the `query()` method is called.
+
+`statements`
+
+An array of statements in the query in a single-transaction query. It is `undefined` in a multi-transaction query.
+
+`transactions`
+
+An array of transaction(s), along with their statements, whether single-transaction or multi-transaction query.
+
+
 ### From the command-line
 
 To use apoc from the command-line, make sure to set the apoc config using the `.apoc.yml` file or set them in the environment variable. For details refer to the configuration section.
 
+Using the `apoc` command, execute ACF files like they were shell scripts or batch files. The ability to include ACF files and execute multiple queries together make this a very useful tool.
+
 ```
 $ apoc populate.acf
 ```
-
-Using the `apoc` command, execute ACF files like they were shell scripts or batch files. The ability to include ACF files and execute multiple queries together make this a very useful tool.
 
 Commandline options:
 
